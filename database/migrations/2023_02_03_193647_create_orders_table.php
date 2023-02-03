@@ -29,14 +29,16 @@ return new class extends Migration
             $table->string('supplier_representative');
             $table->decimal('total',12,2);
             $table->string('status');
-            $table->string('invoice');
-            $table->string('xml');
+            $table->string('invoice')->nullable();
+            $table->string('xml')->nullable();
             $table->timestamps();
         });
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('odoo_product_id');
+            $table->string('product');
             $table->string('description');
+            $table->string('planned_date');
             $table->string('company');
             $table->string('quantity');
             $table->string('quantity_delivered');

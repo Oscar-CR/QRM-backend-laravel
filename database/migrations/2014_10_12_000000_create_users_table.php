@@ -29,13 +29,13 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('fullname');
+            $table->string('fullname')->nullable();
             $table->string('rfc',15);
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('status_id')->references('id')->on('status')->onDelete('cascade');
-            $table->foreignId('companies_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreignId('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
