@@ -13,12 +13,29 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::create('status', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',50);
+            $table->string('description');
+            $table->timestamps();
+        });
+
+        Schema::create('companies', function (Blueprint $table) {
+            $table->id();
+            $table->string('social_reason');
+            $table->string('rfc', 15);
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('fullname');
+            $table->string('rfc',15);
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId('status_id')->references('id')->on('status')->onDelete('cascade');
+            $table->foreignId('companies_id')->references('id')->on('companies')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -31,6 +48,8 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('companies');
+        Schema::dropIfExists('status');
         Schema::dropIfExists('users');
     }
 };
