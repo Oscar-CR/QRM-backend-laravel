@@ -49,7 +49,7 @@ class AdminApiController extends Controller
                         
                     ]);
 
-                    array_push($order_data, (object)[
+                    array_push($company_data, (object)[
                         'id' => $company->id,
                         'social_reason' => $company->social_reason,
                         'rfc' => $company->rfc,
