@@ -32,17 +32,17 @@ class DatabaseSeeder extends Seeder
             'display_name' => 'administrador', // optional
             'description' => '', // optional
         ]);
-        $admin = Role::create([
+        $provider = Role::create([
             'name' => 'provider',
             'display_name' => 'proveedor', // optional
             'description' => '', // optional
         ]);
-        $admin = Role::create([
+        $billtopay = Role::create([
             'name' => 'billtopay',
             'display_name' => 'cuentas por pagar', // optional
             'description' => '', // optional
         ]);
-        $admin = Role::create([
+        $visualizer = Role::create([
             'name' => 'visualizer',
             'display_name' => 'visualizador', // optional
             'description' => '', // optional
@@ -65,25 +65,64 @@ class DatabaseSeeder extends Seeder
         
         Companies::create([
             'social_reason' => 'BH TRADE MARKET SA DE CV',
-            'rfc' => '12345678910',
+            'rfc' => '0987654321',
         ]);
 
         Companies::create([
             'social_reason' => 'PROMO LIFE S DE RL DE CV',
-            'rfc' => '12345678910',
+            'rfc' => '1234123412',
         ]);
+
+        Companies::create([
+            'social_reason' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
+            'rfc' => '9876987654',
+        ]);
+
 
         
         User::create([
-            'fullname' => 'Oscar Chavez Rosales ',
+            'fullname' => 'Oscar Chavez Rosales',
             'rfc' => '123456789012',
-            'email' => 'test@test.com',
+            'email' => 'admin@test.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', //password
             'remember_token' => '',
             'status_id'=>1,
             'company_id'=>1,
         ])->attachRole($admin); 
+
+        User::create([
+            'fullname' => 'Persona 2',
+            'rfc' => '9876543210',
+            'email' => 'proveedor@test.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', //password
+            'remember_token' => '',
+            'status_id'=>1,
+            'company_id'=>4,
+        ])->attachRole($provider);
+
+        User::create([
+            'fullname' => 'Persona 3',
+            'rfc' => '1122334455',
+            'email' => 'billtopay@test.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', //password
+            'remember_token' => '',
+            'status_id'=>1,
+            'company_id'=>1,
+        ])->attachRole($billtopay); 
+
+        User::create([
+            'fullname' => 'Persona 4',
+            'rfc' => '9988776655',
+            'email' => 'visualizer@test.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', //password
+            'remember_token' => '',
+            'status_id'=>1,
+            'company_id'=>1,
+        ])->attachRole($visualizer); 
 
         Order::create([
             'code_sale' => 'PED-13701',
