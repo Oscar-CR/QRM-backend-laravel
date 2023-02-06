@@ -52,7 +52,5 @@ class GlobalApiController extends Controller
         return $user_data;
     }
 
-    public function providerOrder(Request $request){
-        
-    }
+   
 }

@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('invoice')->nullable();
             $table->string('xml')->nullable();
+            $table->string('payment_status')->nullable();
             $table->timestamps();
         });
         Schema::create('products', function (Blueprint $table) {

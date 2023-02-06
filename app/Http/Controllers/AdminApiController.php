@@ -45,6 +45,7 @@ class AdminApiController extends Controller
                         'status' => $order->status,
                         'invoice' => $order->invoice,
                         'xml' => $order->xml,
+                        'payment_status'=> $order->payment_status,
                         'product' => $product_data
                         
                     ]);
