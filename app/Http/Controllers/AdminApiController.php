@@ -23,17 +23,29 @@ class AdminApiController extends Controller
         $orders = Order::all();
         $products = Product::all();
         $companies = Companies::all();
+        $total_orders = 0;
+        $total_to_pay = 0;
+        $total_debt = 0;
+        $total_pay = 0;
 
         foreach($companies as $company){    
             foreach($orders as $order){
-                if($company->social_reason == $order->company){
-                    foreach($products as $product){
+                if($company->social_reason == $order->provider_name){
+                    $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
+                    $total_to_pay = $total_to_pay + floatval($order->total);
+                    if($order->payment_status == 'Pagado'){
+                        $total_pay = $total_pay + floatval($order->total);
+                    }else{
+                        $total_debt = $total_debt + floatval($order->total);
+                    }
+                    
+
+                    foreach($products as $product){                        
                         if($product->pucharse_order_id == $order->id){
                             array_push($product_data, (object)[
                                 'data' => $product,
                             ]);
                         }
-                        
                     }
                     array_push($order_data, (object)[
                         'id' => $order->id,
@@ -60,17 +72,40 @@ class AdminApiController extends Controller
                         'id' => $company->id,
                         'social_reason' => $company->social_reason,
                         'rfc' => $company->rfc,
+                        'orders_total' => $total_orders,
+                        'total_to_pay' => $total_to_pay,
+                        'total_debt' => $total_debt,
+                        'total_pay' => $total_pay,
                         'orders' => $order_data,
                     ]);
-
                 }
             }
-    
-            
-    
         }
         return $company_data;
     }
+
+    public function allUsers(){
+        
+        $user_data = [];
+        $users = User::all();
+        foreach($users as $user){
+
+            $role_id = RoleUser::all()->where('user_id',$user->id)->first();
+
+            array_push($user_data, (object)[
+                'id' => $user->id,
+                'fullname' => $user->fullname,
+                'rfc' => $user->rfc,
+                'email' => $user->email,
+                'status_id' => $user->status_id,
+                'company_id' => $user->company_id,
+                'role_id' => $role_id->role_id,                
+            ]);
+        }
+
+        return $user_data;
+    }
+
 
     public function requiredUserData(){
         $required_data = [];
@@ -189,7 +224,6 @@ class AdminApiController extends Controller
         ]);
 
         return 'usuario eliminado satisfactoriamente';
-
     }
 
 }

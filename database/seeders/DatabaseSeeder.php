@@ -21,12 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+       
         $admin = Role::create([
             'name' => 'admin',
             'display_name' => 'administrador', // optional
@@ -137,6 +132,7 @@ class DatabaseSeeder extends Seeder
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 1242.36,
             'status' => 'Pedido de Compra',
+            'payment_status' => 'En validacion'
         ]);
 
         Product::create([
