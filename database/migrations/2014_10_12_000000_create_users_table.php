@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('social_reason');
-            $table->string('rfc', 15);
+            $table->string('rfc')->nullable();
             $table->timestamps();
         });
 

@@ -17,36 +17,48 @@ class AdminApiController extends Controller
 {
     public function allOrders()
     {
+        $general_data = [];
         $company_data = [];
         $order_data = [];
         $product_data = [];
         $orders = Order::all();
-        $products = Product::all();
+        
+        /* $products = Product::all(); */
         $companies = Companies::all();
-        $total_orders = 0;
-        $total_to_pay = 0;
-        $total_debt = 0;
-        $total_pay = 0;
+      
+        $general_total_to_pay = 0;
+        $general_total_debt = 0;
+        $general_total_pay = 0;
 
         foreach($companies as $company){    
             foreach($orders as $order){
+                $total_orders = 0;
+                $total_to_pay = 0;
+                $total_debt = 0;
+                $total_pay = 0;
+                
                 if($company->social_reason == $order->provider_name){
+
                     $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
                     $total_to_pay = $total_to_pay + floatval($order->total);
+                    $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+
                     if($order->payment_status == 'Pagado'){
                         $total_pay = $total_pay + floatval($order->total);
+                        $general_total_pay = $general_total_pay + floatval($order->total);
                     }else{
                         $total_debt = $total_debt + floatval($order->total);
+                        $general_total_debt  = $general_total_debt + floatval($order->total);
                     }
                     
-
+                    $products = Product::all()->where('pucharse_order_id',$order->id);
+                    
                     foreach($products as $product){                        
-                        if($product->pucharse_order_id == $order->id){
                             array_push($product_data, (object)[
                                 'data' => $product,
                             ]);
                         }
-                    }
+                     
                     array_push($order_data, (object)[
                         'id' => $order->id,
                         'code_sale' => $order->code_sale,
@@ -65,7 +77,6 @@ class AdminApiController extends Controller
                         'xml' => $order->xml,
                         'payment_status'=> $order->payment_status,
                         'product' => $product_data
-                        
                     ]);
 
                     array_push($company_data, (object)[
@@ -78,10 +89,20 @@ class AdminApiController extends Controller
                         'total_pay' => $total_pay,
                         'orders' => $order_data,
                     ]);
+
+                    $order_data = [];
+                    $product_data = [];
                 }
             }
+            
         }
-        return $company_data;
+        array_push($general_data, (object)[
+            'general_total_to_pay' => $general_total_to_pay,
+            'general_total_debt' => $general_total_debt,
+            'general_total_pay' => $general_total_pay,
+            'companies'=> $company_data
+        ]);
+        return $general_data;
     }
 
     public function allUsers(){
