@@ -21,7 +21,7 @@ class AdminApiController extends Controller
         $company_data = [];
         $order_data = [];
         $product_data = [];
-        $orders = Order::all();
+        
         
         /* $products = Product::all(); */
         $companies = Companies::all();
@@ -30,14 +30,15 @@ class AdminApiController extends Controller
         $general_total_debt = 0;
         $general_total_pay = 0;
 
-        foreach($companies as $company){    
-            foreach($orders as $order){
-                $total_orders = 0;
-                $total_to_pay = 0;
-                $total_debt = 0;
-                $total_pay = 0;
+        foreach($companies as $company){  
+            $orders = Order::all()->where('provider_name',$company->social_reason);  
+            $total_orders = 0;
+            $total_to_pay = 0;
+            $total_debt = 0;
+            $total_pay = 0;
                 
-                if($company->social_reason == $order->provider_name){
+            foreach($orders as $order){
+          
 
                     $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
                     $total_to_pay = $total_to_pay + floatval($order->total);
@@ -79,21 +80,24 @@ class AdminApiController extends Controller
                         'product' => $product_data
                     ]);
 
-                    array_push($company_data, (object)[
-                        'id' => $company->id,
-                        'social_reason' => $company->social_reason,
-                        'rfc' => $company->rfc,
-                        'orders_total' => $total_orders,
-                        'total_to_pay' => $total_to_pay,
-                        'total_debt' => $total_debt,
-                        'total_pay' => $total_pay,
-                        'orders' => $order_data,
-                    ]);
+                   
 
-                    $order_data = [];
-                    $product_data = [];
-                }
+               
+                
             }
+            array_push($company_data, (object)[
+                'id' => $company->id,
+                'social_reason' => $company->social_reason,
+                'rfc' => $company->rfc,
+                'orders_total' => $total_orders,
+                'total_to_pay' => $total_to_pay,
+                'total_debt' => $total_debt,
+                'total_pay' => $total_pay,
+                'orders' => $order_data,
+            ]);
+            $order_data = [];
+            $product_data = [];
+            
             
         }
         array_push($general_data, (object)[
