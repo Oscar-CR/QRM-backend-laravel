@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
         
         /* ORDEN 1 */
         Order::create([
-            'code_sale' => 'PED-13701',
+            'code_sale' => 'ORDEN-01',
             'type_purchase' => 'Productos',
             'sequence' => 'COMPRAS PEDIDOS',
             'company' => 'BH TRADE MARKET SA DE CV',
@@ -147,13 +147,13 @@ class DatabaseSeeder extends Seeder
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
             'planned_date' => '2020-09-15 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
-            'total' => 1242.36,
+            'total' => 500.36,
             'status' => 'Pedido de Compra',
             'payment_status' => 'En validacion'
         ]);
         /* PRODUCTO */
         Product::create([
-            'odoo_product_id' => 'D23E2',
+            'odoo_product_id' => 'P01-01',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -168,7 +168,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::create([
-            'odoo_product_id' => '4343',
+            'odoo_product_id' => 'P02-01',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -182,10 +182,11 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 1,
         ]);
         
+        
         /* ORDEN 2 */
 
         Order::create([
-            'code_sale' => 'PED-1231',
+            'code_sale' => 'ORDEN-02',
             'type_purchase' => 'Productos',
             'sequence' => 'COMPRAS PEDIDOS',
             'company' => 'BH TRADE MARKET SA DE CV',
@@ -195,13 +196,13 @@ class DatabaseSeeder extends Seeder
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
             'planned_date' => '2020-09-15 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
-            'total' => 42323.36,
+            'total' => 1000.36,
             'status' => 'Pedido de Compra',
             'payment_status' => 'Pagado'
         ]);
         /* PRODUCTO */
         Product::create([
-            'odoo_product_id' => 'ADA112',
+            'odoo_product_id' => 'P01-02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -216,7 +217,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::create([
-            'odoo_product_id' => 'AWDA12',
+            'odoo_product_id' => 'P02-02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -231,7 +232,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::create([
-            'odoo_product_id' => '34F3WE',
+            'odoo_product_id' => 'P03-02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -246,7 +247,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::create([
-            'odoo_product_id' => 'DWED2WE',
+            'odoo_product_id' => 'P04-02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -263,7 +264,7 @@ class DatabaseSeeder extends Seeder
         /* ORDEN 3 */
 
         Order::create([
-            'code_sale' => 'PED-RWERR',
+            'code_sale' => 'ORDEN-03.01',
             'type_purchase' => 'Productos',
             'sequence' => 'COMPRAS PEDIDOS',
             'company' => 'BH TRADE MARKET SA DE CV',
@@ -273,13 +274,13 @@ class DatabaseSeeder extends Seeder
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
             'planned_date' => '2020-09-15 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
-            'total' => 200.15,
+            'total' => 300.15,
             'status' => 'Pedido de Compra',
             'payment_status' => 'Por pagar'
         ]);
         /* PRODUCTO */
         Product::create([
-            'odoo_product_id' => 'ADA112',
+            'odoo_product_id' => 'P01-03.01',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -294,7 +295,7 @@ class DatabaseSeeder extends Seeder
         ]);
         /* ORDEN 3-2 */
         Order::create([
-            'code_sale' => 'PED-45353',
+            'code_sale' => 'ORDEN-03.02',
             'type_purchase' => 'Productos',
             'sequence' => 'COMPRAS PEDIDOS',
             'company' => 'BH TRADE MARKET SA DE CV',
@@ -304,13 +305,13 @@ class DatabaseSeeder extends Seeder
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
             'planned_date' => '2020-09-15 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
-            'total' => 999.99,
+            'total' => 200.99,
             'status' => 'Pedido de Compra',
             'payment_status' => 'Por pagar'
         ]);
         /* PRODUCTO */
         Product::create([
-            'odoo_product_id' => 'ADA112',
+            'odoo_product_id' => 'P01-03.02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
             'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
             'planned_date' => '2020-09-15 14:26:55',
@@ -323,6 +324,40 @@ class DatabaseSeeder extends Seeder
             'subtotal' => '41323.36',
             'pucharse_order_id' => 4,
         ]);
+
+        /* ORDER 1.2 */
+        Order::create([
+            'code_sale' => 'ORDEN-01.2',
+            'type_purchase' => 'Productos',
+            'sequence' => 'COMPRAS PEDIDOS',
+            'company' => 'BH TRADE MARKET SA DE CV',
+            'code_purchase' => 'OC-11523',
+            'order_date' => '2020-09-14 14:31:42',
+            'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
+            'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
+            'planned_date' => '2020-09-15 14:31:37',
+            'supplier_representative' => 'BRENDA RAMIREZ',
+            'total' => 500.36,
+            'status' => 'Pedido de Compra',
+            'payment_status' => 'En validacion'
+        ]);
+
+        /* PRODUCTO */
+        Product::create([
+            'odoo_product_id' => 'P01-01.2',
+            'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'planned_date' => '2020-09-15 14:26:55',
+            'company' => 'BH TRADE MARKET SA DE CV',
+            'quantity' => '3',
+            'quantity_delivered' => '3',
+            'quantity_invoiced' => '3',
+            'measurement_unit' => '15.81',
+            'unit_price' => '15.81',
+            'subtotal' => '47.43',
+            'pucharse_order_id' => 5,
+        ]);
+
 
     }
 }

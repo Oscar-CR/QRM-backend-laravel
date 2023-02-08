@@ -22,15 +22,12 @@ class AdminApiController extends Controller
         $order_data = [];
         $product_data = [];
         $companies = Companies::all();
-      
         $general_total_to_pay = 0;
         $general_total_debt = 0;
         $general_total_pay = 0;
 
         foreach($companies as $company){  
-            if($company->orders <> null){
-                
-            }
+          
             $orders = Order::all()->where('provider_name',$company->social_reason);  
             $total_orders = 0;
             $total_to_pay = 0;
@@ -38,8 +35,6 @@ class AdminApiController extends Controller
             $total_pay = 0;
                 
             foreach($orders as $order){
-          
-
                     $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
                     $total_to_pay = $total_to_pay + floatval($order->total);
                     $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
@@ -79,11 +74,8 @@ class AdminApiController extends Controller
                         'payment_status'=> $order->payment_status,
                         'product' => $product_data
                     ]);
+                    $product_data = [];
 
-                   
-
-               
-                
             }
             if($total_orders >0){
                 array_push($company_data, (object)[
@@ -99,8 +91,6 @@ class AdminApiController extends Controller
             }
            
             $order_data = [];
-            $product_data = [];
-            
             
         }
         array_push($general_data, (object)[
