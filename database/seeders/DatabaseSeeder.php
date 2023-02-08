@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2020-09-15 14:31:37',
+            'planned_date' => '2023-02-09 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 500.36,
             'status' => 'Pedido de Compra',
@@ -194,7 +194,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'EMPRESA 2 S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2020-09-15 14:31:37',
+            'planned_date' => '2023-02-08 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 1000.36,
             'status' => 'Pedido de Compra',
@@ -272,7 +272,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'EMPRESA 3 S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2020-09-15 14:31:37',
+            'planned_date' => '2023-02-09 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 300.15,
             'status' => 'Pedido de Compra',
@@ -303,7 +303,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'EMPRESA 3 S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2020-09-15 14:31:37',
+            'planned_date' => '2023-02-07 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 200.99,
             'status' => 'Pedido de Compra',
@@ -335,7 +335,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2020-09-15 14:31:37',
+            'planned_date' => '2024-09-15 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 500.36,
             'status' => 'Pedido de Compra',
@@ -358,6 +358,105 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 5,
         ]);
 
+         /* ORDER PROMOLIFE */
+         Order::create([
+            'code_sale' => 'ORDEN-PL',
+            'type_purchase' => 'Productos',
+            'sequence' => 'COMPRAS PEDIDOS',
+            'company' => 'PROMO LIFE S DE RL DE CV',
+            'code_purchase' => 'OC-11523',
+            'order_date' => '2020-09-14 14:31:42',
+            'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
+            'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
+            'planned_date' => '2024-09-15 14:31:37',
+            'supplier_representative' => 'BRENDA RAMIREZ',
+            'total' => 1212.36,
+            'status' => 'Pedido de Compra',
+            'payment_status' => 'En validacion'
+        ]);
 
+        /* PRODUCTO */
+        Product::create([
+            'odoo_product_id' => 'P01-01.2',
+            'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'planned_date' => '2020-09-15 14:26:55',
+            'company' => 'PROMO LIFE S DE RL DE CV',
+            'quantity' => '3',
+            'quantity_delivered' => '3',
+            'quantity_invoiced' => '3',
+            'measurement_unit' => '15.81',
+            'unit_price' => '15.81',
+            'subtotal' => '47.43',
+            'pucharse_order_id' => 6,
+        ]);
+
+         /* ORDER T57 */
+         Order::create([
+            'code_sale' => 'ORDEN-T57',
+            'type_purchase' => 'Productos',
+            'sequence' => 'COMPRAS PEDIDOS',
+            'company' => 'TRADE MARKET 57 SA DE CV',
+            'code_purchase' => 'OC-11523',
+            'order_date' => '2020-09-14 14:31:42',
+            'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
+            'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
+            'planned_date' => '2024-09-15 14:31:37',
+            'supplier_representative' => 'BRENDA RAMIREZ',
+            'total' => 1212.36,
+            'status' => 'Pedido de Compra',
+            'payment_status' => 'En validacion'
+        ]);
+
+        /* PRODUCTO */
+        Product::create([
+            'odoo_product_id' => 'P01-01.2',
+            'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'planned_date' => '2020-09-15 14:26:55',
+            'company' => 'TRADE MARKET 57 SA DE CV',
+            'quantity' => '3',
+            'quantity_delivered' => '3',
+            'quantity_invoiced' => '3',
+            'measurement_unit' => '15.81',
+            'unit_price' => '15.81',
+            'subtotal' => '47.43',
+            'pucharse_order_id' => 7,
+        ]);
+
+         /* ORDER EMPRESA2 */
+         Order::create([
+            'code_sale' => 'ORDEN-T57E2',
+            'type_purchase' => 'Productos',
+            'sequence' => 'COMPRAS PEDIDOS',
+            'company' => 'PROMO LIFE S DE RL DE CV',
+            'code_purchase' => 'OC-11523',
+            'order_date' => '2020-09-14 14:31:42',
+            'provider_name' => 'EMPRESA 2 S.A DE C.V',
+            'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
+            'planned_date' => '2024-09-15 14:31:37',
+            'supplier_representative' => 'BRENDA RAMIREZ',
+            'total' => 1212.36,
+            'status' => 'Pedido de Compra',
+            'payment_status' => 'En validacion'
+        ]);
+
+        /* PRODUCTO */
+        Product::create([
+            'odoo_product_id' => 'P01-01.2',
+            'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'description' => 'CINTA PARA CONTROL DE LA MASA CORPORAL',
+            'planned_date' => '2020-09-15 14:26:55',
+            'company' => 'PROMO LIFE S DE RL DE CV',
+            'quantity' => '3',
+            'quantity_delivered' => '3',
+            'quantity_invoiced' => '3',
+            'measurement_unit' => '15.81',
+            'unit_price' => '15.81',
+            'subtotal' => '47.43',
+            'pucharse_order_id' => 8,
+        ]);
     }
+
+
 }

@@ -9,6 +9,8 @@ use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\Status;
 use App\Models\User;
+use ArrayObject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -243,5 +245,74 @@ class AdminApiController extends Controller
 
         return 'usuario eliminado satisfactoriamente';
     }
+
+    public function general(){
+
+        $general_companies = array(
+            (object) ['social_reason' =>'BH TRADE MARKET SA DE CV'], 
+            (object) ['social_reason' =>  'PROMO LIFE S DE RL DE CV'],
+            (object) ['social_reason' =>  'TRADE MARKET 57 SA DE CV'], 
+            (object) ['social_reason' =>     'PROMO SALE SA DE CV'],
+        );
+        $datetime = Carbon::now();
+        $date = $datetime->format('Y-m-d');             
+        
+        $general_orders = [];
+       
+        
+        foreach($general_companies as $company){
+
+            $general_total_to_pay = 0;
+            $general_total_debt = 0;
+            $general_total_pay = 0;
+            $next_calendar_orders = [];
+
+            $orders = Order::select('*')->where('company', $company->social_reason)->orderBy('planned_date', 'asc')->get();
+          
+            foreach ($orders as $order){
+                $total_to_pay = 0;
+                $total_debt = 0;
+                $total_pay = 0;
+
+                $order_datetime = strtotime($order->planned_date);
+                $order_date = date('Y-m-d',$order_datetime);
+               
+                if($date == $order_date || $date < $order_date){ 
+                    array_push($next_calendar_orders, (object)[
+                        'planned_date' => $order->planned_date,
+                        'total' => $order->total,
+                        'status' => $order->status,
+                        'payment_status' => $order->payment_status,
+                        
+                    ]);
+                }
+
+                $total_to_pay = $total_to_pay + floatval($order->total);
+                $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+
+                if($order->payment_status == 'Pagado'){
+                    $total_pay = $total_pay + floatval($order->total);
+                    $general_total_pay = $general_total_pay + floatval($order->total);
+                }else{
+                    $total_debt = $total_debt + floatval($order->total);
+                    $general_total_debt  = $general_total_debt + floatval($order->total);
+                }
+                
+            }
+
+            array_push($general_orders, (object)[
+                'company_name' => $company->social_reason,
+                'general_total_to_pay' => $general_total_to_pay,
+                'general_total_debt' => $general_total_debt,
+                'general_total_pay' => $general_total_pay,
+                'next_calendar_orders' => $next_calendar_orders,
+            ]); 
+        }
+        
+        return $general_orders;
+
+    }
+
+  
 
 }

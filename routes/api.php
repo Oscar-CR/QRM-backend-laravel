@@ -18,6 +18,7 @@ Route::get('/requiredUserData', [AdminApiController::class, 'requiredUserData'])
 Route::get('/editUser/{user_id}', [AdminApiController::class, 'editUser'])->name('api.editUser');
 Route::post('/updateUser', [AdminApiController::class, 'updateUser'])->name('api.updateUser');
 Route::post('/deleteUser', [AdminApiController::class, 'deleteUser'])->name('api.deleteUser');
+Route::get('/general', [AdminApiController::class, 'general'])->name('api.general');
 
 /* PROVIDER ROUTES */
 Route::post('/providerOrders', [ProviderApiController::class, 'providerOrders'])->name('api.providerOrders');
