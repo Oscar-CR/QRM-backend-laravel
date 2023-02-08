@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProviderApiController extends Controller
 {
@@ -60,5 +61,50 @@ class ProviderApiController extends Controller
        
         return $order_data;
 
+    }
+
+    public function updateXML(Request $request){
+
+        if ($request->hasFile('xml')) {
+            $request->validate([
+                'xml' => 'required',
+                'order_id' => 'required',
+            ]);
+            
+            $xml =  $request->file('xml');
+            $path = Storage::disk('xml')->put('storage/public/xml/', $xml); 
+
+            DB::table('orders')->where('id', $request->id)->update([
+                'xml' => $path, 
+            ]);
+
+            return $path;
+
+        } else {
+            return "No se ha cargado el archivo xml";
+        } 
+    }
+
+    public function updatePDF(Request $request){
+
+        if ($request->hasFile('pdf')) {
+            $request->validate([
+                'xml' => 'required',
+                'order_id' => 'required',
+            ]);
+            
+            $pdf =  $request->file('pdf');
+           
+            $path = Storage::disk('pdf')->put('storage/public/xml/', $pdf); 
+
+            DB::table('orders')->where('id', $request->id)->update([
+                'pdf' => $path, 
+            ]);
+
+            return $path;
+
+        } else {
+            return "No se ha cargado el archivo pdf";
+        } 
     }
 }
