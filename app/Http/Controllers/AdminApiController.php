@@ -315,127 +315,307 @@ class AdminApiController extends Controller
 
     }
 
-    public function initialInvoinces(Request $request){
+    public function generalInitialInvoinces(Request $request){
         
-        $now_datetime = Carbon::now()->format('Y-m-d');
-        return $now_datetime;
-        
+        //almacenan arreglos de objetos
+        $order_data = [];
+        $first_month_data = [];
+        $second_month_data = [];
+        $third_month_data = [];
+        $next_order_data = [];
+
+        //contador general 
+        $general_total_to_pay = 0;
+        $general_total_debt = 0;
+        $general_total_pay = 0;
+
+        //contador primer mes
+        $first_month_total_to_pay = 0;
+        $first_month_total_debt = 0;
+        $first_month_total_pay = 0;
+
+        //contador segundo mes
+        $second_month_total_to_pay = 0;
+        $second_month_total_debt = 0;
+        $second_month_total_pay = 0;
+
+        //contador tercer mes
+        $third_month_total_to_pay = 0;
+        $third_month_total_debt = 0;
+        $third_month_total_pay = 0;
+
+        //fecha actual del servidor
+        $datetime = Carbon::now();
+
+        //Se debe conocer la fecha actual para obtener las facturas de los dias siguientes del calendario
+        $end_date = $datetime->format('Y-m-d');   
+        //Las facturas se obtienen de acuerdo al mes y anio abarcando 3 periodos completos, con una duracion de 1 mes cada uno 
+        $cut_end_date = $datetime->format('Y-m'); 
+
+        //Se debe guardar la fecha anterior al mes actual (2 meses antes)
+        $start = strtotime('-2 months', strtotime($end_date));            
+        $cut_start_date = date ( 'Y-m' , $start );
+
+        //Se debe guardar la fecha anterior al mes actual (1 meses antes)
+        $second_month = strtotime('-1 months', strtotime($end_date));
+        $cut_second_month = date ( 'Y-m' , $second_month );
+
+        $orders = Order::select('*')->orderBy('planned_date', 'asc')->get();
+            
+        foreach($orders as $order){
+
+            $order_date = strtotime($order->planned_date);
+            
+            $order_date_with_day = date ( 'Y-m-d' , $order_date);
+            $order_date_format = date ( 'Y-m' , $order_date);
+
+            //Primer mes
+            if($order_date_format < $cut_second_month && $order_date_format >= $cut_start_date){
+
+                $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+                $first_month_total_to_pay =  $first_month_total_to_pay + floatval($order->total);
+                if($order->payment_status == 'Pagado'){
+                    $general_total_pay = $general_total_pay + floatval($order->total);
+                    $first_month_total_pay = $first_month_total_pay + floatval($order->total);
+                }else{
+                    $general_total_debt  = $general_total_debt + floatval($order->total);
+                    $first_month_total_debt  = $first_month_total_debt + floatval($order->total);
+                }
+                                  
+            }
+            //Segundo mes
+            if($order_date_format >= $cut_second_month && $order_date_format < $cut_end_date  ){
+
+                $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+                $second_month_total_to_pay =  $second_month_total_to_pay + floatval($order->total);
+                if($order->payment_status == 'Pagado'){
+                    $general_total_pay = $general_total_pay + floatval($order->total);
+                    $second_month_total_pay = $second_month_total_pay + floatval($order->total);
+                }else{
+                    $general_total_debt  = $general_total_debt + floatval($order->total);
+                    $second_month_total_debt  = $second_month_total_debt + floatval($order->total);
+                }    
+                
+               
+            }
+            //Tercer mes
+            if($order_date_format > $cut_second_month && $order_date_format <= $cut_end_date  ){
+                
+                $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+                $third_month_total_to_pay =  $third_month_total_to_pay + floatval($order->total);
+                if($order->payment_status == 'Pagado'){
+                    $general_total_pay = $general_total_pay + floatval($order->total);
+                    $third_month_total_pay = $third_month_total_pay + floatval($order->total);
+                }else{
+                    $general_total_debt  = $general_total_debt + floatval($order->total);
+                    $third_month_total_debt  = $third_month_total_debt + floatval($order->total);
+                }
+                     
+            }  
+            //Ordenes siguientes del calendario
+            if($order_date_with_day > $end_date && $order->payment_status <> 'Pagado' ){
+                array_push($next_order_data, (object)[
+                    'id' => $order->id,
+                    'code_sale' => $order->code_sale,
+                    'type_purchase' => $order->type_purchase,
+                    'sequence' => $order->sequence,
+                    'company' => $order->company,
+                    'code_purchase' => $order->code_purchase,
+                    'order_date' => $order->order_date,
+                    'provider_name' => $order->provider_name,
+                    'provider_address' => $order->provider_address,
+                    'planned_date' => $order->planned_date,
+                    'supplier_representative' => $order->supplier_representative,
+                    'total' => $order->total,
+                    'status' => $order->status,
+                    'invoice' => $order->invoice,
+                    'xml' => $order->xml,
+                    'payment_status'=> $order->payment_status,
+                   
+                ]);
+            }
+        }
+
+        array_push($first_month_data, (object)[
+            'date' => $cut_start_date,
+            'first_month_total_to_pay' => $first_month_total_to_pay,
+            'first_month_total_debt' => $first_month_total_debt,
+            'first_month_total_pay' => $first_month_total_pay,
+        ]);
+
+        array_push($second_month_data, (object)[
+            'date' => $cut_second_month,
+            'second_month_total_to_pay' => $second_month_total_to_pay,
+            'second_month_total_debt' => $second_month_total_debt,
+            'second_month_total_pay' => $second_month_total_pay,
+        ]);
+
+        array_push($third_month_data, (object)[
+            'date' => $cut_end_date,
+            'third_month_total_to_pay' => $third_month_total_to_pay,
+            'third_month_total_debt' => $third_month_total_debt,
+            'third_month_total_pay' => $third_month_total_pay,
+        ]);
+          
+        array_push($order_data, (object)[
+            'general_total_to_pay' => $general_total_to_pay,
+            'general_total_debt' => $general_total_debt,
+            'general_total_pay' => $general_total_pay,
+            'first_month_data' => $first_month_data,
+            'second_month_data' => $second_month_data,
+            'third_month_data' => $third_month_data,
+            'next_orders_data' => $next_order_data
+        ]);
+            
+        return $order_data;
+       
     }
 
     public function invoicesByDate(Request $request){
-        if($request->exists('start')){
-            
-            return 'novacio';
-        }else{
+        
+        if($request->exists('end')){
 
+            //almacenan arreglos de objetos
             $order_data = [];
             $first_month_data = [];
             $second_month_data = [];
             $third_month_data = [];
+            $next_order_data = [];
 
+            //contador general 
             $general_total_to_pay = 0;
             $general_total_debt = 0;
             $general_total_pay = 0;
 
+            //contador primer mes
             $first_month_total_to_pay = 0;
-            $first_month__total_debt = 0;
-            $first_month__total_pay = 0;
+            $first_month_total_debt = 0;
+            $first_month_total_pay = 0;
 
+            //contador segundo mes
             $second_month_total_to_pay = 0;
             $second_month_total_debt = 0;
             $second_month_total_pay = 0;
 
+            //contador tercer mes
             $third_month_total_to_pay = 0;
             $third_month_total_debt = 0;
             $third_month_total_pay = 0;
 
+            //fecha actual del servidor
             $datetime = Carbon::now();
-            $end_date = $datetime->format('y-m-d');   
-            $cut_end_date = $datetime->format('Y-m'); 
 
-            $start = strtotime('-3 months', strtotime($end_date));            
+            //Se debe conocer la fecha de limie superior de acuerdo a la fecha enviada al usuario
+            $end =  strtotime($request->end);
+            $end_date = date ( 'Y-m-d' , $end );   
+            //Las facturas se obtienen de acuerdo al mes y anio abarcando 3 periodos completos, con una duracion de 1 mes cada uno 
+            $cut_end_date = date ( 'Y-m' , $end ); 
+
+            //Se debe guardar la fecha anterior al mes actual (2 meses antes)
+            $start = strtotime('-2 months', strtotime($end_date));            
             $cut_start_date = date ( 'Y-m' , $start );
 
-            $second_month = strtotime('-2 months', strtotime($end_date));
+            //Se debe guardar la fecha anterior al mes actual (1 meses antes)
+            $second_month = strtotime('-1 months', strtotime($end_date));
             $cut_second_month = date ( 'Y-m' , $second_month );
 
-            $orders = Order::all(); 
-            
+            $orders = Order::select('*')->orderBy('planned_date', 'asc')->get();
+                
             foreach($orders as $order){
 
                 $order_date = strtotime($order->planned_date);
+                
+                $order_date_with_day = date ( 'Y-m-d' , $order_date);
                 $order_date_format = date ( 'Y-m' , $order_date);
 
                 //Primer mes
                 if($order_date_format < $cut_second_month && $order_date_format >= $cut_start_date){
-                    $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
 
-                    if($order->payment_status == 'Pagado'){
-                        $general_total_pay = $general_total_pay + floatval($order->total);
-                    }else{
-                        $general_total_debt  = $general_total_debt + floatval($order->total);
-                    }
+                    $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
                     $first_month_total_to_pay =  $first_month_total_to_pay + floatval($order->total);
                     if($order->payment_status == 'Pagado'){
-                        $first_month__total_pay = $first_month__total_pay + floatval($order->total);
+                        $general_total_pay = $general_total_pay + floatval($order->total);
+                        $first_month_total_pay = $first_month_total_pay + floatval($order->total);
                     }else{
-                        $first_month__total_debt  = $first_month__total_debt + floatval($order->total);
-                    }                     
+                        $general_total_debt  = $general_total_debt + floatval($order->total);
+                        $first_month_total_debt  = $first_month_total_debt + floatval($order->total);
+                    }
+                                    
                 }
                 //Segundo mes
                 if($order_date_format >= $cut_second_month && $order_date_format < $cut_end_date  ){
-                    $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
 
-                    if($order->payment_status == 'Pagado'){
-                        $general_total_pay = $general_total_pay + floatval($order->total);
-                    }else{
-                        $general_total_debt  = $general_total_debt + floatval($order->total);
-                    }    
+                    $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
                     $second_month_total_to_pay =  $second_month_total_to_pay + floatval($order->total);
                     if($order->payment_status == 'Pagado'){
+                        $general_total_pay = $general_total_pay + floatval($order->total);
                         $second_month_total_pay = $second_month_total_pay + floatval($order->total);
                     }else{
-                            $second_month_total_debt  = $second_month_total_debt + floatval($order->total);
-                    }
-                      
+                        $general_total_debt  = $general_total_debt + floatval($order->total);
+                        $second_month_total_debt  = $second_month_total_debt + floatval($order->total);
+                    }    
+                    
+                
                 }
                 //Tercer mes
                 if($order_date_format > $cut_second_month && $order_date_format <= $cut_end_date  ){
+                    
                     $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
-
-                    if($order->payment_status == 'Pagado'){
-                        $general_total_pay = $general_total_pay + floatval($order->total);
-                    }else{
-                        $general_total_debt  = $general_total_debt + floatval($order->total);
-                    }
-
                     $third_month_total_to_pay =  $third_month_total_to_pay + floatval($order->total);
                     if($order->payment_status == 'Pagado'){
+                        $general_total_pay = $general_total_pay + floatval($order->total);
                         $third_month_total_pay = $third_month_total_pay + floatval($order->total);
                     }else{
+                        $general_total_debt  = $general_total_debt + floatval($order->total);
                         $third_month_total_debt  = $third_month_total_debt + floatval($order->total);
-                    }      
-                }   
+                    }
+                        
+                }  
+                //Ordenes siguientes del calendario
+                if($order_date_with_day > $end_date && $order->payment_status <> 'Pagado' ){
+                    array_push($next_order_data, (object)[
+                        'id' => $order->id,
+                        'code_sale' => $order->code_sale,
+                        'type_purchase' => $order->type_purchase,
+                        'sequence' => $order->sequence,
+                        'company' => $order->company,
+                        'code_purchase' => $order->code_purchase,
+                        'order_date' => $order->order_date,
+                        'provider_name' => $order->provider_name,
+                        'provider_address' => $order->provider_address,
+                        'planned_date' => $order->planned_date,
+                        'supplier_representative' => $order->supplier_representative,
+                        'total' => $order->total,
+                        'status' => $order->status,
+                        'invoice' => $order->invoice,
+                        'xml' => $order->xml,
+                        'payment_status'=> $order->payment_status,
+                    
+                    ]);
+                }
             }
 
             array_push($first_month_data, (object)[
+                'date' => $cut_start_date,
                 'first_month_total_to_pay' => $first_month_total_to_pay,
-                'first_month__total_debt' => $first_month__total_debt,
-                'first_month__total_pay' => $first_month__total_pay,
+                'first_month_total_debt' => $first_month_total_debt,
+                'first_month_total_pay' => $first_month_total_pay,
             ]);
 
             array_push($second_month_data, (object)[
+                'date' => $cut_second_month,
                 'second_month_total_to_pay' => $second_month_total_to_pay,
                 'second_month_total_debt' => $second_month_total_debt,
                 'second_month_total_pay' => $second_month_total_pay,
             ]);
 
             array_push($third_month_data, (object)[
+                'date' => $cut_end_date,
                 'third_month_total_to_pay' => $third_month_total_to_pay,
                 'third_month_total_debt' => $third_month_total_debt,
                 'third_month_total_pay' => $third_month_total_pay,
             ]);
-          
+            
             array_push($order_data, (object)[
                 'general_total_to_pay' => $general_total_to_pay,
                 'general_total_debt' => $general_total_debt,
@@ -443,13 +623,11 @@ class AdminApiController extends Controller
                 'first_month_data' => $first_month_data,
                 'second_month_data' => $second_month_data,
                 'third_month_data' => $third_month_data,
+                'next_orders_data' => $next_order_data
             ]);
-            
+                
             return $order_data;
 
         }
     }
-
-    
-   
 }

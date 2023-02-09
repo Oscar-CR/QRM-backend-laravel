@@ -145,11 +145,11 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2022-11-09 14:31:37',
+            'planned_date' => '2022-12-09 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
-            'total' => 500.36,
+            'total' => 777.36,
             'status' => 'Pedido de Compra',
-            'payment_status' => 'En validacion'
+            'payment_status' => 'Pagado'
         ]);
         /* PRODUCTO */
         Product::create([
@@ -335,7 +335,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2024-09-15 14:31:37',
+            'planned_date' => '2023-12-12 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 500.36,
             'status' => 'Pedido de Compra',
@@ -368,7 +368,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2024-09-15 14:31:37',
+            'planned_date' => '2023-04-08 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 1212.36,
             'status' => 'Pedido de Compra',
@@ -401,7 +401,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2024-09-15 14:31:37',
+            'planned_date' => '2023-05-12 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 1212.36,
             'status' => 'Pedido de Compra',
@@ -434,7 +434,7 @@ class DatabaseSeeder extends Seeder
             'order_date' => '2020-09-14 14:31:42',
             'provider_name' => 'EMPRESA 2 S.A DE C.V',
             'provider_address' => 'AV. GUSTAVO ABAZ SUR N°8 LOMAS DE SAN AGUSTIN NAUCALPAN DE JUAREZ México (MX)53490 México',
-            'planned_date' => '2024-09-15 14:31:37',
+            'planned_date' => '2023-09-01 14:31:37',
             'supplier_representative' => 'BRENDA RAMIREZ',
             'total' => 1212.36,
             'status' => 'Pedido de Compra',
