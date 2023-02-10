@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProviderApiController extends Controller
 {
-    public function providerOrders(Request $request){
+    public function providerOrders($token){
         
-        $request->validate([
-            'token' => 'required',
-        ]);
+        $token_id =  DB::table('personal_access_tokens')->where('token', $token)->value('tokenable_id');
         
-        $token_id =  DB::table('personal_access_tokens')->where('token', $request->token)->value('tokenable_id');  
+        if($token_id == null){
+            return 'Token invalido';
+        }
+        
         $user = User::all()->where('id', $token_id)->first();
         $company = Companies::all()->where('id',$user->company_id)->first();
 

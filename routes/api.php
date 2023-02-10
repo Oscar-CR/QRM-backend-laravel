@@ -12,7 +12,8 @@ Route::post('/login', [GlobalApiController::class, 'login'])->name('api.login');
 
 
 /* ADMIN ROUTES */
-Route::get('/allOrders', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
+Route::get('/allOrders/{token}', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
+Route::get('/allOrdersByCompany/{token}', [AdminApiController::class, 'allOrdersByCompany'])->name('api.allOrdersByCompany');
 Route::get('/allUsers', [AdminApiController::class, 'allUsers'])->name('api.allUsers');
 Route::get('/requiredUserData', [AdminApiController::class, 'requiredUserData'])->name('api.requiredUserData');
 Route::get('/editUser/{user_id}', [AdminApiController::class, 'editUser'])->name('api.editUser');
@@ -26,7 +27,7 @@ Route::post('/invoicesByDate', [AdminApiController::class, 'invoicesByDate'])->n
 
 
 /* PROVIDER ROUTES */
-Route::post('/providerOrders', [ProviderApiController::class, 'providerOrders'])->name('api.providerOrders');
+Route::get('/providerOrders/{token}', [ProviderApiController::class, 'providerOrders'])->name('api.providerOrders');
 
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -7,21 +7,151 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\RoleUser;
-use App\Models\Status;
+use App\Models\Token;
 use App\Models\User;
-use ArrayObject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-use function PHPUnit\Framework\isEmpty;
 
 class AdminApiController extends Controller
 {
-    public function allOrders()
-    {
+    public function allOrders($token){
+
+        $user_token = Token::all()->where('token',$token)->first();
+
+        if($user_token == null){
+            return 'Token invalido';
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',2);
+
+        //Los proveedores no pueden ver todas las ordenes
+        if(count($role) <> 0){
+            return 'Acceso restringido';
+        }
+
         $general_data = [];
+        $company_data = [];
+        $order_data = [];
+        $product_data = [];
+
+        $companies = Companies::all();
+        $general_total_to_pay = 0;
+        $general_total_debt = 0;
+        $general_total_pay = 0;
+      
+        foreach($companies as $company){  
+              
+            $orders = Order::all()->where('provider_name',$company->social_reason);  
+            $total_orders = 0;
+            $total_to_pay = 0;
+            $total_debt = 0;
+            $total_pay = 0;
+                   
+            foreach($orders as $order){
+
+                $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
+                $total_to_pay = $total_to_pay + floatval($order->total);
+                $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
+    
+                if($order->payment_status == 'Pagado'){
+                    $total_pay = $total_pay + floatval($order->total);
+                    $general_total_pay = $general_total_pay + floatval($order->total);
+                }else{
+                    $total_debt = $total_debt + floatval($order->total);
+                    $general_total_debt  = $general_total_debt + floatval($order->total);
+                }
+                        
+                $products = Product::all()->where('pucharse_order_id',$order->id);
+                        
+                foreach($products as $product){ 
+                    array_push($product_data, (object)[
+                        'data' => $product,
+                    ]);
+                }
+                         
+                array_push($order_data, (object)[
+                    'id' => $order->id,
+                    'code_sale' => $order->code_sale,
+                    'type_purchase' => $order->type_purchase,
+                    'sequence' => $order->sequence,
+                    'company' => $order->company,
+                    'code_purchase' => $order->code_purchase,
+                    'order_date' => $order->order_date,
+                    'provider_name' => $order->provider_name,
+                    'provider_address' => $order->provider_address,
+                    'planned_date' => $order->planned_date,
+                    'supplier_representative' => $order->supplier_representative,
+                    'total' => $order->total,
+                    'status' => $order->status,
+                    'invoice' => $order->invoice,
+                    'xml' => $order->xml,
+                    'payment_status'=> $order->payment_status,
+                    'product' => $product_data
+                ]);
+                        
+                $product_data = [];
+    
+            }
+                
+            if($total_orders >0){
+                array_push($company_data, (object)[
+                    'id' => $company->id,
+                    'social_reason' => $company->social_reason,
+                    'rfc' => $company->rfc,
+                    'orders_total' => $total_orders,
+                    'total_to_pay' => $total_to_pay,
+                    'total_debt' => $total_debt,
+                    'total_pay' => $total_pay,
+                    'orders' => $order_data,
+                ]);
+            }
+                
+            $order_data = [];
+                
+        }
+            
+        array_push($general_data, (object)[
+            'general_total_to_pay' => $general_total_to_pay,
+            'general_total_debt' => $general_total_debt,
+            'general_total_pay' => $general_total_pay,
+            'companies'=> $company_data
+            ]);
+            
+        return $general_data;
+      
+    }
+
+    public function allOrdersByCompany($token){
+
+        $user_token = Token::all()->where('token',$token)->first();
+
+        if($user_token == null){
+            return 'Token invalido';
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',2);
+
+        //Los proveedores no pueden ver todas las ordenes
+        if(count($role) <> 0){
+            return 'Acceso restringido';
+        }
+
+        $general_companies = array(
+            (object) ['social_reason' =>'BH TRADE MARKET SA DE CV'], 
+            (object) ['social_reason' =>  'PROMO LIFE S DE RL DE CV'],
+            (object) ['social_reason' =>  'TRADE MARKET 57 SA DE CV'], 
+            (object) ['social_reason' =>     'PROMO SALE SA DE CV'],
+        );
+
+        $general_data = [];
+        $general_company_data = [];
         $company_data = [];
         $order_data = [];
         $product_data = [];
@@ -30,19 +160,21 @@ class AdminApiController extends Controller
         $general_total_debt = 0;
         $general_total_pay = 0;
 
-        foreach($companies as $company){  
-          
-            $orders = Order::all()->where('provider_name',$company->social_reason);  
-            $total_orders = 0;
-            $total_to_pay = 0;
-            $total_debt = 0;
-            $total_pay = 0;
-                
-            foreach($orders as $order){
-                    $total_orders = Order::all()->where('provider_name',$company->social_reason )->count();
+        foreach($general_companies as $general_company){
+
+            foreach($companies as $company){  
+              
+                $orders = Order::all()->where('provider_name',$company->social_reason)->where('company',$general_company->social_reason);  
+                $total_orders = 0;
+                $total_to_pay = 0;
+                $total_debt = 0;
+                $total_pay = 0;
+                        
+                foreach($orders as $order){
+                    $total_orders = count($orders);
                     $total_to_pay = $total_to_pay + floatval($order->total);
                     $general_total_to_pay =  $general_total_to_pay + floatval($order->total);
-
+        
                     if($order->payment_status == 'Pagado'){
                         $total_pay = $total_pay + floatval($order->total);
                         $general_total_pay = $general_total_pay + floatval($order->total);
@@ -50,15 +182,15 @@ class AdminApiController extends Controller
                         $total_debt = $total_debt + floatval($order->total);
                         $general_total_debt  = $general_total_debt + floatval($order->total);
                     }
-                    
+                           
                     $products = Product::all()->where('pucharse_order_id',$order->id);
-                    
+                            
                     foreach($products as $product){                        
-                            array_push($product_data, (object)[
-                                'data' => $product,
-                            ]);
-                        }
-                     
+                        array_push($product_data, (object)[
+                            'data' => $product,
+                        ]);
+                    }
+                             
                     array_push($order_data, (object)[
                         'id' => $order->id,
                         'code_sale' => $order->code_sale,
@@ -78,33 +210,45 @@ class AdminApiController extends Controller
                         'payment_status'=> $order->payment_status,
                         'product' => $product_data
                     ]);
+                    
                     $product_data = [];
+        
+                }
+                    
+                if($total_orders >0){
+                        
+                    array_push($company_data, (object)[
+                        'id' => $company->id,
+                        'social_reason' => $company->social_reason,
+                        'rfc' => $company->rfc,
+                        'orders_total' => $total_orders,
+                        'total_to_pay' => $total_to_pay,
+                        'total_debt' => $total_debt,
+                        'total_pay' => $total_pay,
+                        'orders' => $order_data,
+                    ]);
+                }
+                   
+                $order_data = [];
+                    
+            }
 
-            }
-            if($total_orders >0){
-                array_push($company_data, (object)[
-                    'id' => $company->id,
-                    'social_reason' => $company->social_reason,
-                    'rfc' => $company->rfc,
-                    'orders_total' => $total_orders,
-                    'total_to_pay' => $total_to_pay,
-                    'total_debt' => $total_debt,
-                    'total_pay' => $total_pay,
-                    'orders' => $order_data,
-                ]);
-            }
-           
-            $order_data = [];
-            
+            array_push($general_company_data, (object)[
+                'social_reason' => $general_company->social_reason,
+                'companies'=> $company_data
+            ]);
         }
+        
         array_push($general_data, (object)[
             'general_total_to_pay' => $general_total_to_pay,
             'general_total_debt' => $general_total_debt,
             'general_total_pay' => $general_total_pay,
             'companies'=> $company_data
         ]);
-        return $general_data;
+            
+        return $general_company_data;
     }
+
 
     public function allUsers(){
         
