@@ -74,6 +74,11 @@ class ProviderApiController extends Controller
 
             $nombreXML = time() . ' ' . str_replace(',', ' ', $xml->getClientOriginalName());
             $xml->move(public_path('storage/xml/'), $nombreXML); 
+
+            DB::table('orders')->where('id', $request->id)->update([
+                'xml' => 'storage/xml/'. $nombreXML, 
+            ]);
+
         } 
 
         if ($request->hasFile('pdf')) {
@@ -83,7 +88,12 @@ class ProviderApiController extends Controller
             $pdf =  $request->file('pdf');
 
             $nombrePDF = time() . ' ' . str_replace(',', ' ', $pdf->getClientOriginalName());
-            $pdf->move(public_path('storage/pdf/'), $nombrePDF); 
+            $pdf->move(public_path('storage/pdf/'), $nombrePDF);
+            
+            DB::table('orders')->where('id', $request->id)->update([
+                'invoice' => 'storage/xml/'. $nombrePDF, 
+            ]);
+
         } 
 
         $path_data  = [];
@@ -92,10 +102,11 @@ class ProviderApiController extends Controller
             'pdf' => 'storage/pdf/'. $nombrePDF,
         ]);
 
+
         return $path_data;
     }
 
-    public function updateXML(Request $request){
+    /* public function updateXML(Request $request){
 
         if ($request->hasFile('xml')) {
             $request->validate([
@@ -138,5 +149,5 @@ class ProviderApiController extends Controller
         } else {
             return "No se ha cargado el archivo pdf";
         } 
-    }
+    } */
 }

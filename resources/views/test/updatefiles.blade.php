@@ -11,6 +11,10 @@
     
     <div class="container">
         <div class="card">
+            <p>Order id(no se muestra al usuario,se toma de la orden)</p>
+            {!!  Form::text('id') !!}
+        </div>
+        <div class="card">
             <p>XML</p>
             {!! Form::file('xml', ['class' => 'form-control']) !!}
         </div>
