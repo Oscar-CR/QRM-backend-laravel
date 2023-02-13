@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 
 /*  GLOBAL ROUTES */
-Route::post('/login', [GlobalApiController::class, 'login'])->name('api.login');
-
+Route::post('/login', [GlobalApiController::class, 'login'])->name('api.login'); 
+Route::post('/send-mail', [GlobalApiController::class, 'sendMail'])->name('api.send-mail');
 
 /* ADMIN ROUTES */
 Route::get('/allOrders/{token}', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
