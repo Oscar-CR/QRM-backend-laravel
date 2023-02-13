@@ -35,25 +35,12 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
-
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
-        ],
-        'xml' => [
-            'driver' => 'local',
-            'root' => storage_path('app/orders/xml'),
-            'url' => env('APP_URL').'/storage/xml',
-            'visibility' => 'public',
-        ],
-        'pdf' => [
-            'driver' => 'local',
-            'root' => storage_path('app/orders/pdf'),
-            'url' => env('APP_URL').'/storage/pdf',
-            'visibility' => 'public',
         ],
         's3' => [
             'driver' => 's3',
@@ -66,6 +53,10 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'postFiles' => [
+            'driver' => 'local',
+            'root'   =>  public_path(),
+            ]
 
     ],
 
