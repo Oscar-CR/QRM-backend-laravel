@@ -7,7 +7,7 @@
     <title>Subida de archivos</title>
 </head>
 <body>
-{!! Form::open(['route' => 'test.update-files-store', 'enctype' => 'multipart/form-data']) !!}
+{!! Form::open(['route' => 'api.updateFiles', 'enctype' => 'multipart/form-data']) !!}
     
     <div class="container">
         <div class="card">

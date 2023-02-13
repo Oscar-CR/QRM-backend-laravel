@@ -64,6 +64,37 @@ class ProviderApiController extends Controller
 
     }
 
+    public function updateFiles(Request $request)
+    {
+        if ($request->hasFile('xml')) {
+            $request->validate([
+                'xml' => 'required|mimes:xml',
+            ]);
+            $xml =  $request->file('xml');
+
+            $nombreXML = time() . ' ' . str_replace(',', ' ', $xml->getClientOriginalName());
+            $xml->move(public_path('storage/xml/'), $nombreXML); 
+        } 
+
+        if ($request->hasFile('pdf')) {
+            $request->validate([
+                'pdf' => 'required|mimes:pdf',
+            ]);
+            $pdf =  $request->file('pdf');
+
+            $nombrePDF = time() . ' ' . str_replace(',', ' ', $pdf->getClientOriginalName());
+            $pdf->move(public_path('storage/pdf/'), $nombrePDF); 
+        } 
+
+        $path_data  = [];
+        array_push($path_data, (object)[
+            'xml' => 'storage/xml/'. $nombreXML,
+            'pdf' => 'storage/pdf/'. $nombrePDF,
+        ]);
+
+        return $path_data;
+    }
+
     public function updateXML(Request $request){
 
         if ($request->hasFile('xml')) {
