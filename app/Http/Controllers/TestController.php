@@ -19,19 +19,26 @@ class TestController extends Controller
         
         if ($request->hasFile('xml')) {
             $request->validate([
-                'xml' => 'required|image|mimes:jpg,jpeg,png,gif',
+                'xml' => 'required|mimes:xml',
             ]);
-            $image =  $request->file('xml');
+            $xml =  $request->file('xml');
 
-            $nombreImagen = time() . ' ' . str_replace(',', ' ', $image->getClientOriginalName());
-            $image->move(public_path('storage/xml/'), $nombreImagen);
+            $nombreXML = time() . ' ' . str_replace(',', ' ', $xml->getClientOriginalName());
+            $xml->move(public_path('storage/xml/'), $nombreXML); 
+        } 
 
-            /* $path = Storage::disk('postImages')->put('storage/posts', $image);  */
+        if ($request->hasFile('pdf')) {
+            $request->validate([
+                'pdf' => 'required|mimes:pdf',
+            ]);
+            $pdf =  $request->file('pdf');
 
-            return $nombreImagen;
-        } else {
-            return "error";
-        }
+            $nombrePDF = time() . ' ' . str_replace(',', ' ', $pdf->getClientOriginalName());
+            $pdf->move(public_path('storage/pdf/'), $nombrePDF); 
+        } 
+
+
       
+        return $nombreXML . "      " . $nombrePDF;
     }
 }

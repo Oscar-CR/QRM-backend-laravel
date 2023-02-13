@@ -11,14 +11,14 @@
     
     <div class="container">
         <div class="card">
-            
+            <p>XML</p>
             {!! Form::file('xml', ['class' => 'form-control']) !!}
         </div>
 
-        <!-- <div class="card">
-            {!! Form::label('image', 'PDF') !!}
-            {!! Form::file('image', ['class' => 'form-control']) !!}
-        </div> -->
+        <div class="card">
+            <p>PDF</p>
+            {!! Form::file('pdf', ['class' => 'form-control']) !!}
+        </div> 
     </div>    
 
     {!! Form::submit('Guardar', ['name' => 'submit']) !!}
