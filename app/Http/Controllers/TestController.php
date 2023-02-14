@@ -76,7 +76,7 @@ class TestController extends Controller
                     foreach($full_detail_orders->details_orders as $order){
                         $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
                         $find_company = Companies::all()->where('social_reason', $order->company)->last();
-                        $find_provider = Companies::all()->where('social_reason', $order->company)->last();
+                        $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
 
 
                         if($find_company ==null){
@@ -88,7 +88,7 @@ class TestController extends Controller
 
                         if($find_provider ==null){
                             $create_provider = new Companies();
-                            $create_provider->social_reason =  $order->provider_address;
+                            $create_provider->social_reason =  $order->provider_name;
                             $create_provider->rfc =  'SIN ASIGNAR';
                             $create_provider->save(); 
                         }
