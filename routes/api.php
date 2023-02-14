@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminApiController;
 use App\Http\Controllers\GlobalApiController;
 use App\Http\Controllers\ProviderApiController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,8 @@ Route::post('/invoicesByDate', [AdminApiController::class, 'invoicesByDate'])->n
 Route::get('/providerOrders/{token}', [ProviderApiController::class, 'providerOrders'])->name('api.providerOrders');
 Route::post('/updateFiles', [ProviderApiController::class, 'updateFiles'])->name('api.updateFiles');
 
+/* TEST */
+Route::post('/testOrders', [TestController::class, 'testOrders'])->name('api.testOrders');
 
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

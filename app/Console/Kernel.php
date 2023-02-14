@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('test:job')->everyMinute();
+        $schedule->command('orders:job')->everyMinute();
     }
 
     /**
