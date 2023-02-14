@@ -132,10 +132,10 @@ class DatabaseSeeder extends Seeder
             'status_id'=>1,
             'company_id'=>1,
         ])->attachRole($visualizer); 
-
-        /* ---------------- ORDENES Y PRODUCTOS  ----------------*/
+/* 
+        // ---------------- ORDENES Y PRODUCTOS  ----------------
         
-        /* ORDEN 1 */
+        // ORDEN 1 
         Order::create([
             'code_sale' => 'ORDEN-01',
             'type_purchase' => 'Productos',
@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pedido de Compra',
             'payment_status' => 'Pagado'
         ]);
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-01',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -183,8 +183,7 @@ class DatabaseSeeder extends Seeder
         ]);
         
         
-        /* ORDEN 2 */
-
+        // ORDEN 2 
         Order::create([
             'code_sale' => 'ORDEN-02',
             'type_purchase' => 'Productos',
@@ -200,7 +199,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pedido de Compra',
             'payment_status' => 'Pagado'
         ]);
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -261,8 +260,7 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 2,
         ]);
 
-        /* ORDEN 3 */
-
+        // ORDEN 3 
         Order::create([
             'code_sale' => 'ORDEN-03.01',
             'type_purchase' => 'Productos',
@@ -278,7 +276,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pedido de Compra',
             'payment_status' => 'Por pagar'
         ]);
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-03.01',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -293,7 +291,7 @@ class DatabaseSeeder extends Seeder
             'subtotal' => '41323.36',
             'pucharse_order_id' => 3,
         ]);
-        /* ORDEN 3-2 */
+        // ORDEN 3-2 
         Order::create([
             'code_sale' => 'ORDEN-03.02',
             'type_purchase' => 'Productos',
@@ -309,7 +307,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pedido de Compra',
             'payment_status' => 'Por pagar'
         ]);
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-03.02',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -325,7 +323,7 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 4,
         ]);
 
-        /* ORDER 1.2 */
+        // ORDER 1.2 
         Order::create([
             'code_sale' => 'ORDEN-01.2',
             'type_purchase' => 'Productos',
@@ -342,7 +340,7 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'En validacion'
         ]);
 
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-01.2',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -358,7 +356,7 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 5,
         ]);
 
-         /* ORDER PROMOLIFE */
+         // ORDER PROMOLIFE 
          Order::create([
             'code_sale' => 'ORDEN-PL',
             'type_purchase' => 'Productos',
@@ -375,7 +373,7 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'En validacion'
         ]);
 
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-01.2',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -391,7 +389,7 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 6,
         ]);
 
-         /* ORDER T57 */
+         // ORDER T57 
          Order::create([
             'code_sale' => 'ORDEN-T57',
             'type_purchase' => 'Productos',
@@ -408,7 +406,7 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'En validacion'
         ]);
 
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-01.2',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -424,7 +422,7 @@ class DatabaseSeeder extends Seeder
             'pucharse_order_id' => 7,
         ]);
 
-         /* ORDER EMPRESA2 */
+         // ORDER EMPRESA2 
          Order::create([
             'code_sale' => 'ORDEN-T57E2',
             'type_purchase' => 'Productos',
@@ -441,7 +439,7 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'En validacion'
         ]);
 
-        /* PRODUCTO */
+        // PRODUCTO 
         Product::create([
             'odoo_product_id' => 'P01-01.2',
             'product' => '[T 87 BLANCO] CINTA PARA CONTROL DE LA MASA CORPORAL',
@@ -455,7 +453,7 @@ class DatabaseSeeder extends Seeder
             'unit_price' => '15.81',
             'subtotal' => '47.43',
             'pucharse_order_id' => 8,
-        ]);
+        ]); */
     }
 
 
