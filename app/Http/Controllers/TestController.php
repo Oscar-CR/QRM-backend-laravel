@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\SalesOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -47,7 +48,7 @@ class TestController extends Controller
     {
         $page = 1;
 
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NjM4NzU0NSwiZXhwIjoxNjc2NjQ2NzQ1LCJuYmYiOjE2NzYzODc1NDUsImp0aSI6IlVlMVFSSFJnMklFYWpQblQiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.h0qGyzUzH-sNch6yhXKFhxHosO4Uqxwl4oVyhjlMX9s';
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NjY1NjgwNiwiZXhwIjoxNjc2OTE2MDA2LCJuYmYiOjE2NzY2NTY4MDYsImp0aSI6IldHbEJzc1VYOVdSdXhPaDciLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.6gMb2fmXwNyeiMWfnGVf8LzANNk40tbW7KsJfaTid90';
         $init_url = 'https://dev-api-bpms.promolife.lat/api/pedidos?page='.$page.'&token='. $token;
         $init_ch = curl_init();
         curl_setopt($init_ch, CURLOPT_URL, $init_url);
@@ -72,6 +73,12 @@ class TestController extends Controller
             //Validacion dordenes nulas
             if($res <> null){
                 foreach ($res->data->sales->data as $full_detail_orders){
+
+                    $find_sale_order = SalesOrders::all();
+                    
+                    $create_sale_order = new SalesOrders();
+
+
 
                     foreach($full_detail_orders->details_orders as $order){
                         $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
