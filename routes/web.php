@@ -18,7 +18,7 @@ use App\Http\Controllers\ProviderApiController;
 |
 */
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
 });
 
@@ -31,16 +31,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+ */
 
-
-Route::get('/test-update-files', [TestController::class, 'testUpdateFiles'])->name('test.update-files');
+/* Route::get('/test-update-files', [TestController::class, 'testUpdateFiles'])->name('test.update-files');
 Route::post('/test-update-files-store', [TestController::class, 'testUpdateFilesStore'])->name('test.update-files-store');
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; */
 
 
 /*  GLOBAL ROUTES */
-Route::post('/login-user', [GlobalApiController::class, 'loginUser'])->name('api.loginUser'); 
+Route::post('/login', [GlobalApiController::class, 'loginUser'])->name('api.loginUser'); 
 Route::post('/send-mail', [GlobalApiController::class, 'sendMail'])->name('api.send-mail');
 
 /* ADMIN ROUTES */
