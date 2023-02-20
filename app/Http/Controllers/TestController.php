@@ -72,80 +72,103 @@ class TestController extends Controller
 
             //Validacion dordenes nulas
             if($res <> null){
-                foreach ($res->data->sales->data as $full_detail_orders){
 
-                    $find_sale_order = SalesOrders::all();
-                    
-                    $create_sale_order = new SalesOrders();
+                foreach ($res->data->sales->data as $sale_order){
+               
+                    $find_sale_order = SalesOrders::all()->where('order_date',$sale_order->code_sale)->last();
 
+                    if($find_sale_order == null){
+                            
+                        $create_sale_order = new SalesOrders();
+                        $create_sale_order->code_sale = $sale_order->code_sale;
+                        $create_sale_order->name_sale = $sale_order->name_sale;
+                        $create_sale_order->sequence = $sale_order->sequence;
+                        $create_sale_order->invoice_address = $sale_order->invoice_address;
+                        $create_sale_order->delivery_address = $sale_order->delivery_address;
+                        $create_sale_order->delivery_time = $sale_order->delivery_time;
+                        $create_sale_order->delivery_instructions = $sale_order->delivery_instructions;
+                        $create_sale_order->order_date = $sale_order->order_date;
+                        $create_sale_order->incidence = $sale_order->incidence;
+                        $create_sale_order->sample_required = $sale_order->sample_required;
+                        $create_sale_order->additional_information = $sale_order->additional_information;
+                        $create_sale_order->tariff = $sale_order->tariff;
+                        $create_sale_order->commercial_name = $sale_order->commercial_name;
+                        $create_sale_order->commercial_email = $sale_order->commercial_email;
+                        $create_sale_order->commercial_odoo_id = $sale_order->commercial_odoo_id;
+                        $create_sale_order->subtotal = $sale_order->subtotal;
+                        $create_sale_order->taxes = $sale_order->taxes;
+                        $create_sale_order->status_id = $sale_order->status_id;
+                        $create_sale_order->save();
 
+                        $find_sale_id = SalesOrders::all()->where('code_sale',$sale_order->code_sale)->last()->value('id');
 
-                    foreach($full_detail_orders->details_orders as $order){
-                        $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
-                        $find_company = Companies::all()->where('social_reason', $order->company)->last();
-                        $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
+                        foreach($sale_order->details_orders as $order){
 
-
-                        if($find_company ==null){
-                            $create_company = new Companies();
-                            $create_company->social_reason =  $order->company;
-                            $create_company->rfc =  'SIN ASIGNAR';
-                            $create_company->save(); 
-                        }
-
-                        if($find_provider ==null){
-                            $create_provider = new Companies();
-                            $create_provider->social_reason =  $order->provider_name;
-                            $create_provider->rfc =  'SIN ASIGNAR';
-                            $create_provider->save(); 
-                        }
-                        
-                        if($find_order == null){
-                            $create_order = new Order();
-                            $create_order->code_sale =  $order->code_sale;
-                            $create_order->type_purchase =  'Pedido';
-                            $create_order->sequence =  $order->sequence;
-                            $create_order->company =  $order->company;
-                            $create_order->code_purchase =  $order->code_order;
-                            $create_order->order_date =  $order->order_date;
-                            $create_order->provider_name =  $order->provider_name;
-                            $create_order->provider_address =  $order->provider_address;
-                            $create_order->planned_date =  $order->planned_date;
-                            $create_order->supplier_representative =  $order->supplier_representative;
-                            $create_order->total =  $order->total;
-                            $create_order->status =  $order->status;
-                            $create_order->invoice =  null;
-                            $create_order->xml =  null;
-                            $create_order->payment_status = 'En validacion';
-                            $create_order->save();
-
-                            $order_id = Order::all()->where('code_sale',$order->code_sale)->value('id');
-
-                            foreach($order->products as $product){
-                                $create_product = new Product();
-                                $create_product->odoo_product_id = strval($product->odoo_product_id);
-                                $create_product->product =   $product->product;
-                                $create_product->description =  $product->description;
-                                $create_product->planned_date =  $product->planned_date;
-                                $create_product->company =  $product->company;
-                                $create_product->quantity =  $product->quantity;
-                                $create_product->quantity_delivered =  $product->quantity_invoiced;
-                                $create_product->quantity_invoiced =  $product->quantity_delivered;
-                                $create_product->measurement_unit =  $product->measurement_unit;
-                                $create_product->unit_price =  $product->unit_price;
-                                $create_product->subtotal =  $product->subtotal;
-                                $create_product->pucharse_order_id  =  $order_id ;
-                                $create_product->save();
+                            $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
+                            $find_company = Companies::all()->where('social_reason', $order->company)->last();
+                            $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
+        
+        
+                            if($find_company ==null){
+                                $create_company = new Companies();
+                                $create_company->social_reason =  $order->company;
+                                $create_company->rfc =  'SIN ASIGNAR';
+                                $create_company->save(); 
+                            }
+        
+                            if($find_provider ==null){
+                                $create_provider = new Companies();
+                                $create_provider->social_reason =  $order->provider_name;
+                                $create_provider->rfc =  'SIN ASIGNAR';
+                                $create_provider->save(); 
+                            }
+                                
+                            if($find_order == null){
+                                $create_order = new Order();
+                                $create_order->code_sale =  $order->code_sale;
+                                $create_order->type_purchase =  'Pedido';
+                                $create_order->sequence =  $order->sequence;
+                                $create_order->company =  $order->company;
+                                $create_order->code_purchase =  $order->code_order;
+                                $create_order->order_date =  $order->order_date;
+                                $create_order->provider_name =  $order->provider_name;
+                                $create_order->provider_address =  $order->provider_address;
+                                $create_order->planned_date =  $order->planned_date;
+                                $create_order->supplier_representative =  $order->supplier_representative;
+                                $create_order->total =  $order->total;
+                                $create_order->status =  $order->status;
+                                $create_order->invoice =  null;
+                                $create_order->xml =  null;
+                                $create_order->payment_status = 'En validacion';
+                                $create_order->sales_order_id = $find_sale_id;
+                                $create_order->save();
+        
+                                $order_id = Order::all()->where('code_sale',$order->code_sale)->value('id');
+        
+                                foreach($order->products as $product){
+                                    $create_product = new Product();
+                                    $create_product->odoo_product_id = strval($product->odoo_product_id);
+                                    $create_product->product =   $product->product;
+                                    $create_product->description =  $product->description;
+                                    $create_product->planned_date =  $product->planned_date;
+                                    $create_product->company =  $product->company;
+                                    $create_product->quantity =  $product->quantity;
+                                    $create_product->quantity_delivered =  $product->quantity_invoiced;
+                                    $create_product->quantity_invoiced =  $product->quantity_delivered;
+                                    $create_product->measurement_unit =  $product->measurement_unit;
+                                    $create_product->unit_price =  $product->unit_price;
+                                    $create_product->subtotal =  $product->subtotal;
+                                    $create_product->pucharse_order_id  =  $order_id ;
+                                    $create_product->save();
+                                }
                             }
                         }
-
                     }
                 }
             }
-            
         } 
 
         return 'actualizacion completa';
-       /*  dd($res->data->sales->data); */
+       
     }
 }
