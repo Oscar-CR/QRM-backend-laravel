@@ -97,16 +97,16 @@ class GlobalApiController extends Controller
         return $user_data;
     }
 
-    public function sendMail(Request $request)
+    public function resetPassword(Request $request)
     {
         $user = User::all()->where('rfc', $request->rfc)->first();
         
         if($user == null){
-            return 'Usuario no encontrado';
+            return ['message' =>'Usuario no encontrado'];
         }
 
         if($user->email == null){
-            return 'Este usuario no tiene un correo asignado';
+            return ['message' =>'Este usuario no tiene un correo asignado']; 
         }
 
         $new_password = Str::random(10);
@@ -118,7 +118,7 @@ class GlobalApiController extends Controller
 
         Mail::to($user->email)->send(new RecoveryMail($user->rfc,$new_password));
 
-        return 'Mensaje enviado con exito';
+        return ['message' =>'Mensaje enviado con exito'];
     }
 
     

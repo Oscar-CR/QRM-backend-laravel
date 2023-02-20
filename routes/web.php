@@ -41,7 +41,7 @@ require __DIR__.'/auth.php'; */
 
 /*  GLOBAL ROUTES */
 Route::post('/login', [GlobalApiController::class, 'loginUser'])->name('api.loginUser'); 
-Route::post('/send-mail', [GlobalApiController::class, 'sendMail'])->name('api.send-mail');
+Route::post('/reset-password', [GlobalApiController::class, 'resetPassword'])->name('api.resetPassword');
 
 /* ADMIN ROUTES */
 Route::get('/allOrders/{token}', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
