@@ -2,12 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\RecoveryMail;
 use Illuminate\Console\Command;
 use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\SalesOrders;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class OrdersTask extends Command
 {
@@ -32,9 +36,14 @@ class OrdersTask extends Command
      */
     public function handle()
     {
+                //Consumo de api paginado
+        //Ejemplo:
+        //https://dev-api-bpms.promolife.lat/api/pedidos?page=1&token=NE3JBE2UEU
+        //https://dev-api-bpms.promolife.lat/api/pedidos?page=2&token=NE3JBE2UEU
+
         $page = 1;
 
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NjY1NjgwNiwiZXhwIjoxNjc2OTE2MDA2LCJuYmYiOjE2NzY2NTY4MDYsImp0aSI6IldHbEJzc1VYOVdSdXhPaDciLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.6gMb2fmXwNyeiMWfnGVf8LzANNk40tbW7KsJfaTid90';
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NjkxOTYxMywiZXhwIjoxNjc3MTc4ODEzLCJuYmYiOjE2NzY5MTk2MTMsImp0aSI6IkxkSUphZVVrOFNFekVCWmoiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.E04t-gqcP_M2KBrO6klfkMVbQcbziGNwMa8P0p-UUmg';
         $init_url = 'https://dev-api-bpms.promolife.lat/api/pedidos?page='.$page.'&token='. $token;
         $init_ch = curl_init();
         curl_setopt($init_ch, CURLOPT_URL, $init_url);
@@ -45,6 +54,7 @@ class OrdersTask extends Command
         
         $total_pages = $init_res->data->sales->last_page;
         
+        //Valida el total de paginas del api
         for($i = 1; $i <= $total_pages; $i++){
             $page = $i;
 
@@ -63,6 +73,11 @@ class OrdersTask extends Command
                
                     $find_sale_order = SalesOrders::all()->where('order_date',$sale_order->code_sale)->last();
 
+                    //   Pedidos de venta
+                    //    ╚ Ordenes
+                    //       ╚ Productos
+
+                    //Registro de nuevos pedido de venta
                     if($find_sale_order == null){
                             
                         $create_sale_order = new SalesOrders();
@@ -96,13 +111,15 @@ class OrdersTask extends Command
                             $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
                             $find_user_to_send_mail = User::all()->where('email',$sale_order->commercial_email)->last();
 
+                            //Registro de nuevos proveedores
                             if($find_company ==null){
                                 $create_company = new Companies();
                                 $create_company->social_reason =  $order->company;
                                 $create_company->rfc =  'SIN ASIGNAR';
                                 $create_company->save(); 
                             }
-        
+                            
+                            //Registro de nuevos proveedores
                             if($find_provider ==null){
                                 $create_provider = new Companies();
                                 $create_provider->social_reason =  $order->provider_name;
@@ -112,17 +129,32 @@ class OrdersTask extends Command
 
                             $find_provider_id = Companies::all()->where('social_reason', $order->provider_name)->last();
 
+                            //Si no encuentra el usuario en la BD se creara un nuevo registro y enviara su acceso
                             if($find_user_to_send_mail == null){
+
+                                $password= Str::random(10);
+                                $encrypted_password = Hash::make($password);
+
                                 $create_user = new User();
                                 $create_user->fullname = $sale_order->commercial_name;
                                 $create_user->rfc = null;
                                 $create_user->email = $sale_order->commercial_email;
-                                $create_user->password = 'test'; 
+                                $create_user->password = $encrypted_password; 
                                 $create_user->status_id = 1;
                                 $create_user->company_id = $find_provider_id->id;
                                 $create_user->save();
+
+                                try {
+
+                                    Mail::to($sale_order->commercial_email)->send(new RecoveryMail($sale_order->commercial_email,$password));
+                                  
+                                } catch (\Exception $e) {
+      
+                                }
+
                             }
-                                
+                            
+                            //Registro de nuevas ordenes
                             if($find_order == null){
                                 $create_order = new Order();
                                 $create_order->code_sale =  $order->code_sale;
@@ -144,7 +176,8 @@ class OrdersTask extends Command
                                 $create_order->save();
         
                                 $order_id = Order::all()->where('code_sale',$order->code_sale)->value('id');
-        
+                                
+                                //Registro de productos de cada ordern
                                 foreach($order->products as $product){
                                     $create_product = new Product();
                                     $create_product->odoo_product_id = strval($product->odoo_product_id);
