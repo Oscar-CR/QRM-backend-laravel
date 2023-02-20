@@ -31,8 +31,9 @@ return new class extends Migration
             $table->string('commercial_name')->nullable();
             $table->string('commercial_email')->nullable();
             $table->string('commercial_odoo_id')->nullable();
-            $table->string('subtotal');
-            $table->string('taxes');
+            $table->string('subtotal')->nullable();
+            $table->string('taxes')->nullable();
+            $table->string('total')->nullable();
             $table->string('status_id');
             $table->timestamps();
         });

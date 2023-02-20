@@ -7,6 +7,7 @@ use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\SalesOrders;
+use App\Models\User;
 
 class OrdersTask extends Command
 {
@@ -82,6 +83,7 @@ class OrdersTask extends Command
                         $create_sale_order->commercial_odoo_id = $sale_order->commercial_odoo_id;
                         $create_sale_order->subtotal = $sale_order->subtotal;
                         $create_sale_order->taxes = $sale_order->taxes;
+                        $create_sale_order->total = $sale_order->total;
                         $create_sale_order->status_id = $sale_order->status_id;
                         $create_sale_order->save();
 
@@ -92,8 +94,8 @@ class OrdersTask extends Command
                             $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
                             $find_company = Companies::all()->where('social_reason', $order->company)->last();
                             $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
-        
-        
+                            $find_user_to_send_mail = User::all()->where('email',$sale_order->commercial_email)->last();
+
                             if($find_company ==null){
                                 $create_company = new Companies();
                                 $create_company->social_reason =  $order->company;
@@ -106,6 +108,19 @@ class OrdersTask extends Command
                                 $create_provider->social_reason =  $order->provider_name;
                                 $create_provider->rfc =  'SIN ASIGNAR';
                                 $create_provider->save(); 
+                            }
+
+                            $find_provider_id = Companies::all()->where('social_reason', $order->provider_name)->last();
+
+                            if($find_user_to_send_mail == null){
+                                $create_user = new User();
+                                $create_user->fullname = $sale_order->commercial_name;
+                                $create_user->rfc = null;
+                                $create_user->email = $sale_order->commercial_email;
+                                $create_user->password = 'test'; 
+                                $create_user->status_id = 1;
+                                $create_user->company_id = $find_provider_id->id;
+                                $create_user->save();
                             }
                                 
                             if($find_order == null){

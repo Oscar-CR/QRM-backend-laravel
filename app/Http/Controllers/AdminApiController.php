@@ -45,9 +45,6 @@ class AdminApiController extends Controller
         $general_total_pay = 0;
       
         foreach($companies as $company){  
-
-            $order_sales = Order::all();
-           
               
             $orders = Order::all()->where('provider_name',$company->social_reason);  
             $total_orders = 0;
