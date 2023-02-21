@@ -315,7 +315,7 @@ class AdminApiController extends Controller
         $role_user->user_type = 'App\Models\User';
         $role_user->save();
 
-        return 'usuario creado satisfactoriamente';
+        return  array (['message' =>'usuario creado satisfactoriamente']);
 
     }
 
@@ -323,13 +323,16 @@ class AdminApiController extends Controller
 
         $user_data = [];
         $user = User::all()->where('id',$user_id)->last();
+
+        if($user == null){
+            return array (['message' =>'Usuario no encontrado']) ;
+        }
+        
+
         $role_user = RoleUser::all()->where('user_id',$user->id)->first();
         $role = Role::all()->where('id', $role_user->role_id)->first();
 
-        if($user == null){
-            return 'Usuario no encontrado';
-        }
-        
+       
         array_push($user_data, (object)[
             'id' => $user->id,
             'fullname' => $user->fullname,
@@ -377,7 +380,7 @@ class AdminApiController extends Controller
             'role_id' => $request->role_id, 
         ]);
 
-        return 'usuario actualizado satisfactoriamente';
+        return array (['message' =>'usuario actualizado satisfactoriamente']);
     }
 
     public function deleteUser(Request $request){
@@ -389,7 +392,7 @@ class AdminApiController extends Controller
             'status_id' => 2, 
         ]);
 
-        return 'usuario eliminado satisfactoriamente';
+        return  array (['message' =>'usuario eliminado satisfactoriamente']);
     }
 
     public function general(){

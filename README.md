@@ -53,6 +53,9 @@ cp .env.example .env
 ``` 
 php artisan key:generate
 ```
+```
+php artisan storage:link
+```
 *Load initial data to database*
 ``` 
 php artisan migrate:fresh --seed

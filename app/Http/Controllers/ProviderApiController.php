@@ -17,7 +17,7 @@ class ProviderApiController extends Controller
         $token_id =  DB::table('personal_access_tokens')->where('token', $token)->value('tokenable_id');
         
         if($token_id == null){
-            return 'Token invalido';
+            return ['message' =>'Token invalido'];
         }
         
         $user = User::all()->where('id', $token_id)->first();
@@ -34,10 +34,22 @@ class ProviderApiController extends Controller
            
             foreach($products as $product){                        
                     array_push($product_data, (object)[
-                        'data' => $product,
+                        "id"=> $product->id,
+                        "odoo_product_id"=> $product->odoo_product_id,
+                        "product"=>$product->product,
+                        "description"=> $product->description,
+                        "planned_date"=>$product->planned_date,
+                        "company"=> $product->company,
+                        "quantity"=> $product->quantity,
+                        "quantity_delivered"=> $product->quantity_delivered,
+                        "quantity_invoiced"=>$product->quantity_invoiced ,
+                        "measurement_unit"=>$product->measurement_unit,
+                        "unit_price"=> $product->unit_price,
+                        "subtotal"=> $product->subtotal,
+                        "pucharse_order_id"=> $product->pucharse_order_id,
                     ]);
                 }
-                
+            
             array_push($order_data, (object)[
                 'id' => $order->id,
                 'code_sale' => $order->code_sale,
