@@ -3,6 +3,96 @@
 ## Admin
 
 <details>
+	<summary>All orders</summary>
+Get all orders from all providers
+
+<br>
+
+GET
+```php
+{url}/allOrders/{token}
+```
+BODY
+```php
+// no data
+```
+RESPONSE 
+```json
+[
+	{
+		"general_total_to_pay": 19910.01,
+		"general_total_debt": 19910.01,
+		"general_total_pay": 0,
+		"companies": [
+			{
+				"id": 8,
+				"social_reason": "Donnelly and Sons",
+				"rfc": "SIN ASIGNAR",
+				"orders_total": 1,
+				"total_to_pay": 204,
+				"total_debt": 204,
+				"total_pay": 0,
+				"orders": [
+					{
+						"id": 1,
+						"code_sale": "PED1230",
+						"type_purchase": "Pedido",
+						"sequence": "COMPRAS PEDIDO",
+						"company": "PROMO LIFE",
+						"code_purchase": "OC9691",
+						"order_date": "2023-02-13 19:16:56",
+						"provider_name": "Donnelly and Sons",
+						"provider_address": "8873 Hessel Square\nReillyfort, OR 59045",
+						"planned_date": "2023-02-22 16:52:34",
+						"supplier_representative": "Prof. Andreanne Yundt",
+						"total": "204.00",
+						"status": "En Proceso",
+						"invoice": null,
+						"xml": null,
+						"payment_status": "En validacion",
+						"product": [
+							{
+								"data": {
+								"id": 1,
+								"odoo_product_id": "43",
+								"product": "delectus enim",
+								"description": "Voluptatem voluptatum rem sint optio inventore id.",
+								"planned_date": "2023-02-23 06:51:55",
+								"company": "PROMO LIFE",
+								"quantity": "1714",
+								"quantity_delivered": "1714",
+								"quantity_invoiced": "1067",
+								"measurement_unit": "Pieza",
+								"unit_price": "52.00",
+								"subtotal": "507.00",
+								"pucharse_order_id": 1,
+								"created_at": "2023-02-20T19:40:01.000000Z",
+								"updated_at": "2023-02-20T19:40:01.000000Z"
+								}
+							}
+						]
+					}
+				]
+			//More companies with more data
+			},
+		]
+	}
+]
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"message": "Usuario no encontrado"
+	}
+]
+```
+</details>
+
+
+
+<details>
 	<summary>Edit user</summary>
 Get specific information for a user
 
@@ -35,7 +125,7 @@ ERROR RESPONSE
 ```json
 [
 	{
-		 "message": "Usuario no encontrado"
+		"message": "Usuario no encontrado"
 	}
 ]
 ```
@@ -100,7 +190,7 @@ RESPONSE
 ```json
 [	
 	{
-		 "message": "usuario eliminado satisfactoriamente"
+		"message": "usuario eliminado satisfactoriamente"
 	}
 ]
 ```
@@ -109,7 +199,7 @@ ERROR RESPONSE
 ```json
 [
 	{
-		 "message": "Usuario no encontrado"
+		"message": "Usuario no encontrado"
 	}
 ]
 ```
@@ -206,7 +296,7 @@ ERROR RESPONSE
 ```json
 [
 	{
-		 "message": "Usuario no encontrado"
+		"message": "Usuario no encontrado"
 	}
 ]
 ```
@@ -228,7 +318,8 @@ POST
 ```
 BODY
 ```php
-"rfc": "USER RFC",
+"email": "USER EMAIL",
+"password": "USER PASSWORD",
 ```
 RESPONSE 
 ```json
@@ -253,8 +344,7 @@ POST
 ```
 BODY
 ```php
-"rfc": "USER RFC",
-"password": "USER PASSWORD",
+"email": "USER EMAIL",
 ```
 RESPONSE
 ```json

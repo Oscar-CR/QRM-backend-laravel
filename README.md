@@ -22,7 +22,7 @@
 
 
 ### *Recommended Extensions (VS Code)*
-| Characteristic      | Requirement |
+| Extension      | Version |
 | ----------- | ----------- |
 | Laravel Snippets    | 1.15.0   |
 | Material Icon Theme           | 4.24.0  |
