@@ -35,10 +35,10 @@ Route::middleware('auth')->group(function () {
 });
  */
 
-/* Route::get('/test-update-files', [TestController::class, 'testUpdateFiles'])->name('test.update-files');
+ Route::get('/test-update-files', [TestController::class, 'testUpdateFiles'])->name('test.update-files');
 Route::post('/test-update-files-store', [TestController::class, 'testUpdateFilesStore'])->name('test.update-files-store');
 
-require __DIR__.'/auth.php'; */
+/*require __DIR__.'/auth.php'; */
 
 
 /*  GLOBAL ROUTES */

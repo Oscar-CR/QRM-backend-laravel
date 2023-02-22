@@ -80,7 +80,7 @@ class GlobalApiController extends Controller
         //Por lo que se elimina en caso de existir mas de un token
         DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
         //Se crea un nuevo token
-        $user->createToken($request->rfc)->plainTextToken;
+        $user->createToken($request->email)->plainTextToken;
 
         $token =  DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->value('token');
 
@@ -102,7 +102,7 @@ class GlobalApiController extends Controller
         $user = User::all()->where('email', $request->email)->first();
         
         if($user == null){
-            return ['message' =>'Usuario no encontrado'];
+            return array(['message' =>'Usuario no encontrado']);
         }
 
         $new_password = Str::random(10);
@@ -112,7 +112,11 @@ class GlobalApiController extends Controller
             'password' => $encrypted_password, 
         ]);
 
-        Mail::to($user->email)->send(new RecoveryMail($user->rfc,$new_password));
+        try {
+            Mail::to($user->email)->send(new RecoveryMail($user->email,$new_password));
+            DB::table('personal_access_tokens')->where('name', $request->email)->delete();
+        } catch (\Exception $e) {
+        }
 
         
         return array(['message' =>'Email enviado con exito']);

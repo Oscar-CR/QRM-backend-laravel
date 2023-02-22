@@ -1068,7 +1068,16 @@ RESPONSE
 ```json
 [
 	{
-		"message": "REQUEST MESSAGE",
+		"message": "Email enviado con exito",
+	}
+]
+```
+
+ERROR RESPONSE
+```json
+[
+	{
+		"message": "Usuario no encontrado",
 	}
 ]
 ```
