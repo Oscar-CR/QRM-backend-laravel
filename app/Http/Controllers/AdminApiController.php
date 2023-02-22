@@ -315,7 +315,6 @@ class AdminApiController extends Controller
 
         $request->validate([
             'fullname' => 'required',
-            'rfc' => 'required',
             'email' => 'required',
             'password' => 'required',
             'role_id' => 'required',
@@ -327,14 +326,14 @@ class AdminApiController extends Controller
         $user->fullname = $request->fullname;
         $user->rfc = $request->rfc;
         $user->email = $request->email;
-        $user->passwod = $encrypted_password;
+        $user->password = $encrypted_password;
         $user->status_id = 1;
         $user->company_id = $request->company_id;
         $user->save();
 
         $user_id = User::all()->where('fullname',$request->fullname)->last();
         $role_user = new RoleUser();
-        $role_user->role_id = $request->id;
+        $role_user->role_id = $request->role_id;
         $role_user->user_id = $user_id->id;
         $role_user->user_type = 'App\Models\User';
         $role_user->save();
