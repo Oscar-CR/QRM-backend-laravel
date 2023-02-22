@@ -924,6 +924,106 @@ ERROR RESPONSE
 </details>
 
 
+<details>
+	<summary>Upload files</summary>
+Route used to upload xml and pdf files, you can upload one document or two.
+
+<br>
+
+POST
+```php
+{url}/updateFiles
+```
+BODY
+```json
+{
+	"xml": "xml file",
+	"pdf": "pdf file",
+}
+```
+RESPONSE 
+```json
+[
+    {
+        "id": 11,
+        "code_sale": "PED4103",
+        "type_purchase": "Pedido",
+        "sequence": "COMPRAS MAQUILA",
+        "company": "BH TRADEMARKET",
+        "code_purchase": "OC9122",
+        "order_date": "2023-02-14 15:34:24",
+        "provider_name": "Bosco LLC",
+        "provider_address": "96418 Aliyah Canyon\nSouth Kristyview, CA 44481",
+        "planned_date": "2023-02-23 06:42:38",
+        "supplier_representative": "Berry Roob",
+        "total": "817.00",
+        "status": "Confirmado",
+        "invoice": null,
+        "xml": null,
+        "payment_status": "En validacion",
+        "product": [
+            {
+                "id": 21,
+                "odoo_product_id": "55",
+                "product": "deleniti quia",
+                "description": "At voluptatem est corrupti saepe accusantium.",
+                "planned_date": "2023-02-20 21:29:21",
+                "company": "PROMO LIFE",
+                "quantity": "245",
+                "quantity_delivered": "245",
+                "quantity_invoiced": "154",
+                "measurement_unit": "Pieza",
+                "unit_price": "59.00",
+                "subtotal": "317.00",
+                "pucharse_order_id": 11
+            },
+            {
+                "id": 22,
+                "odoo_product_id": "25",
+                "product": "suscipit quae",
+                "description": "Et aperiam ut maxime aliquid fugit id.",
+                "planned_date": "2023-02-21 04:25:31",
+                "company": "BH TRADEMARKET",
+                "quantity": "1711",
+                "quantity_delivered": "1711",
+                "quantity_invoiced": "1592",
+                "measurement_unit": "Pieza",
+                "unit_price": "91.00",
+                "subtotal": "440.00",
+                "pucharse_order_id": 11
+            },
+            {
+                "id": 23,
+                "odoo_product_id": "87",
+                "product": "eos ipsam",
+                "description": "Sunt magnam dolores alias quasi.",
+                "planned_date": "2023-02-22 18:17:41",
+                "company": "PROMO LIFE",
+                "quantity": "1543",
+                "quantity_delivered": "1543",
+                "quantity_invoiced": "1038",
+                "measurement_unit": "Pieza",
+                "unit_price": "99.00",
+                "subtotal": "876.00",
+                "pucharse_order_id": 11
+            }
+        ]
+    }
+]
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"xml": "storage/xml/namefile.xml",
+        "pdf": "storage/pdf/namefile.pdf",
+	}
+]
+```
+</details>
+
+
 ## Global
 
 <details>

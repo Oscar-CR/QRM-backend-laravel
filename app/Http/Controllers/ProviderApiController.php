@@ -78,6 +78,10 @@ class ProviderApiController extends Controller
 
     public function updateFiles(Request $request)
     {
+        $path_data  = [];
+        $xml_data = "";
+        $pdf_data = "";
+
         if ($request->hasFile('xml')) {
             $request->validate([
                 'xml' => 'required|mimes:xml',
@@ -90,6 +94,8 @@ class ProviderApiController extends Controller
             DB::table('orders')->where('id', $request->id)->update([
                 'xml' => 'storage/xml/'. $nombreXML, 
             ]);
+
+            $xml_data = 'storage/xml/'. $nombreXML;
 
         } 
 
@@ -106,60 +112,18 @@ class ProviderApiController extends Controller
                 'invoice' => 'storage/xml/'. $nombrePDF, 
             ]);
 
+            $pdf_data = 'storage/pdf/'. $nombrePDF;
+
         } 
 
-        $path_data  = [];
+        
         array_push($path_data, (object)[
-            'xml' => 'storage/xml/'. $nombreXML,
-            'pdf' => 'storage/pdf/'. $nombrePDF,
+            'xml' => $xml_data,
+            'pdf' => $pdf_data,
         ]);
 
 
         return $path_data;
     }
 
-    /* public function updateXML(Request $request){
-
-        if ($request->hasFile('xml')) {
-            $request->validate([
-                'xml' => 'required',
-                'order_id' => 'required',
-            ]);
-            
-            $xml =  $request->file('xml');
-            $path = Storage::disk('xml')->put('storage/public/xml/', $xml); 
-
-            DB::table('orders')->where('id', $request->id)->update([
-                'xml' => $path, 
-            ]);
-
-            return $path;
-
-        } else {
-            return "No se ha cargado el archivo xml";
-        } 
-    }
-
-    public function updatePDF(Request $request){
-
-        if ($request->hasFile('pdf')) {
-            $request->validate([
-                'xml' => 'required',
-                'order_id' => 'required',
-            ]);
-            
-            $pdf =  $request->file('pdf');
-           
-            $path = Storage::disk('pdf')->put('storage/public/xml/', $pdf); 
-
-            DB::table('orders')->where('id', $request->id)->update([
-                'pdf' => $path, 
-            ]);
-
-            return $path;
-
-        } else {
-            return "No se ha cargado el archivo pdf";
-        } 
-    } */
 }
