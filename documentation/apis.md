@@ -726,7 +726,7 @@ BODY
 ```json
 {
 	"fullname": "User fullname",
-    "rfc": '"User rfc | null",
+    "rfc": "User rfc | no required",
     "email":"User email",
     "password": "User password (plaintext)",
     "role_id": 1" (Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4)",
