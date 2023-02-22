@@ -712,6 +712,38 @@ RESPONSE
 ```
 </details>
 
+<details>
+	<summary>Create user</summary>
+Create new user in database
+
+<br>
+
+POST
+```php
+{url}/storeUser
+```
+BODY
+```php
+{
+	'fullname':'User fullname',
+    'rfc': 'rfc!null',
+    'email':'User email',
+    'password': 'User password (plaintext)',
+    'role_id': '1 | Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4',
+    'company_id': '2 | SIN ASIGNAR = 1 | BH TRADE MARKET SA DE CV = 2 | PROMO LIFE S DE RL DE CV = 3 | TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V = 4'
+}
+```
+RESPONSE 
+```json
+[	
+	{
+		"message": "usuario creado satisfactoriamente"
+		
+	}
+]
+```
+
+
 
 <details>
 	<summary>Edit user</summary>
@@ -1085,4 +1117,4 @@ ERROR RESPONSE
 
 
 
-### <  [`volver`](../README.md)
+[`< volver`](../README.md)

@@ -73,4 +73,6 @@ php artisan serve
 
 ## **Documentation**
 
-### >  [`APIS`](./documentation/apis.md)
+[`> general`](./documentation/general.md)
+
+[`> apis`](./documentation/apis.md)

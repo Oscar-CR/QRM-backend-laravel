@@ -52,6 +52,7 @@ Route::get('/allUsers', [AdminApiController::class, 'allUsers'])->name('api.allU
 Route::get('/requiredUserData', [AdminApiController::class, 'requiredUserData'])->name('api.requiredUserData');
 Route::get('/editUser/{user_id}', [AdminApiController::class, 'editUser'])->name('api.editUser');
 Route::post('/updateUser', [AdminApiController::class, 'updateUser'])->name('api.updateUser');
+Route::post('/storeUser', [AdminApiController::class, 'storeUser'])->name('api.storeUser');
 Route::post('/deleteUser', [AdminApiController::class, 'deleteUser'])->name('api.deleteUser');
 Route::get('/general', [AdminApiController::class, 'general'])->name('api.general');
 /* Route::post('/updateXML', [AdminApiController::class, 'updateXML'])->name('api.updateXML');
