@@ -714,7 +714,7 @@ RESPONSE
 
 <details>
 	<summary>Create user</summary>
-Create new user in database
+Create new user in database (No token required)
 
 <br>
 
@@ -743,7 +743,7 @@ RESPONSE
 ]
 ```
 
-
+</details>
 
 <details>
 	<summary>Edit user</summary>
