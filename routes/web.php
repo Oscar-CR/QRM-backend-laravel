@@ -56,7 +56,7 @@ Route::post('/deleteUser', [AdminApiController::class, 'deleteUser'])->name('api
 Route::get('/general', [AdminApiController::class, 'general'])->name('api.general');
 /* Route::post('/updateXML', [AdminApiController::class, 'updateXML'])->name('api.updateXML');
 Route::post('/updatePDF', [AdminApiController::class, 'updatePDF'])->name('api.updatePDF'); */
-Route::post('/generalInitialInvoinces', [AdminApiController::class, 'generalInitialInvoinces'])->name('api.generalInitialInvoinces');
+Route::get('/generalInitialInvoinces', [AdminApiController::class, 'generalInitialInvoinces'])->name('api.generalInitialInvoinces');
 Route::post('/invoicesByDate', [AdminApiController::class, 'invoicesByDate'])->name('api.invoicesByDate');
 
 /* PROVIDER ROUTES */

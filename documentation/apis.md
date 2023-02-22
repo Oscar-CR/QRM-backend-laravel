@@ -373,31 +373,248 @@ ERROR RESPONSE
 ```
 </details>
 
-
-
-
-
-
 <details>
-	<summary>All orders by company </summary>
-Get all orders from a specific providers
+	<summary>Initial Invoinces</summary>
+Get all orders by company, per a specific cut day (today) and the next orders
 
 <br>
 
 GET
 ```php
-{url}/allOrdersByCompany/{token}
+{url}/generalInitialInvoinces
 ```
 BODY
 ```php
-// no data
+{
+	// no data
+}
 ```
 RESPONSE 
 ```json
 [
-	{
-		
-	},
+    {
+        "social_reason": "BH TRADE MARKET SA DE CV",
+        "order_data": [
+            {
+                "general_total_to_pay": 0,
+                "general_total_debt": 0,
+                "general_total_pay": 0,
+                "first_date_data": [
+                    {
+                        "date": "2022-12-22",
+                        "first_date_total_to_pay": 0,
+                        "first_date_total_debt": 0,
+                        "first_date_total_pay": 0
+                    }
+                ],
+                "second_date_data": [
+                    {
+                        "date": "2023-01-22",
+                        "second_date_total_to_pay": 0,
+                        "second_date_total_debt": 0,
+                        "second_date_total_pay": 0
+                    }
+                ],
+                "third_date_data": [
+                    {
+                        "date": "2023-02-22",
+                        "third_date_total_to_pay": 0,
+                        "third_date_total_debt": 0,
+                        "third_date_total_pay": 0
+                    }
+                ],
+                "next_orders_data": []
+            }
+        ]
+    },
+    {
+        "social_reason": "PROMO LIFE",
+        "order_data": [
+            {
+                "general_total_to_pay": 4448,
+                "general_total_debt": 4448,
+                "general_total_pay": 0,
+                "first_date_data": [
+                    {
+                        "date": "2022-12-22",
+                        "first_date_total_to_pay": 0,
+                        "first_date_total_debt": 0,
+                        "first_date_total_pay": 0
+                    }
+                ],
+                "second_date_data": [
+                    {
+                        "date": "2023-01-22",
+                        "second_date_total_to_pay": 2199,
+                        "second_date_total_debt": 2199,
+                        "second_date_total_pay": 0
+                    }
+                ],
+                "third_date_data": [
+                    {
+                        "date": "2023-02-22",
+                        "third_date_total_to_pay": 2249,
+                        "third_date_total_debt": 2249,
+                        "third_date_total_pay": 0
+                    }
+                ],
+                "next_orders_data": [
+                    {
+                        "id": 1,
+                        "code_sale": "PED1230",
+                        "type_purchase": "Pedido",
+                        "sequence": "COMPRAS PEDIDO",
+                        "company": "PROMO LIFE",
+                        "code_purchase": "OC9691",
+                        "order_date": "2023-02-13 19:16:56",
+                        "provider_name": "Donnelly and Sons",
+                        "provider_address": "8873 Hessel Square\nReillyfort, OR 59045",
+                        "planned_date": "2023-02-23 16:52:34",
+                        "supplier_representative": "Prof. Andreanne Yundt",
+                        "total": "204.00",
+                        "status": "En Proceso",
+                        "invoice": null,
+                        "xml": null,
+                        "payment_status": "En validacion"
+                    }
+                ]
+            }
+        ]
+    },
+]
+```
+
+
+
+</details>
+
+
+<details>
+	<summary> invoices by date</summary>
+Get all orders by company, per a specific cut day and the next orders
+
+<br>
+
+POST
+```php
+{url}/invoicesByDate
+```
+BODY
+```php
+{
+	"end": "2023-02-21"
+}
+```
+RESPONSE 
+```json
+[
+    {
+        "social_reason": "BH TRADE MARKET SA DE CV",
+        "order_data": [
+            {
+                "general_total_to_pay": 0,
+                "general_total_debt": 0,
+                "general_total_pay": 0,
+                "first_date_data": [
+                    {
+                        "date": "2022-12-21",
+                        "first_date_total_to_pay": 0,
+                        "first_date_total_debt": 0,
+                        "first_date_total_pay": 0
+                    }
+                ],
+                "second_date_data": [
+                    {
+                        "date": "2023-01-21",
+                        "second_date_total_to_pay": 0,
+                        "second_date_total_debt": 0,
+                        "second_date_total_pay": 0
+                    }
+                ],
+                "third_date_data": [
+                    {
+                        "date": "2023-02-21",
+                        "third_date_total_to_pay": 0,
+                        "third_date_total_debt": 0,
+                        "third_date_total_pay": 0
+                    }
+                ],
+                "next_orders_data": []
+            }
+        ]
+    },
+    {
+        "social_reason": "PROMO LIFE",
+        "order_data": [
+            {
+                "general_total_to_pay": 4398,
+                "general_total_debt": 4398,
+                "general_total_pay": 0,
+                "first_date_data": [
+                    {
+                        "date": "2022-12-21",
+                        "first_date_total_to_pay": 0,
+                        "first_date_total_debt": 0,
+                        "first_date_total_pay": 0
+                    }
+                ],
+                "second_date_data": [
+                    {
+                        "date": "2023-01-21",
+                        "second_date_total_to_pay": 2199,
+                        "second_date_total_debt": 2199,
+                        "second_date_total_pay": 0
+                    }
+                ],
+                "third_date_data": [
+                    {
+                        "date": "2023-02-21",
+                        "third_date_total_to_pay": 2199,
+                        "third_date_total_debt": 2199,
+                        "third_date_total_pay": 0
+                    }
+                ],
+                "next_orders_data": [
+                    {
+                        "id": 14,
+                        "code_sale": "PED6659",
+                        "type_purchase": "Pedido",
+                        "sequence": "COMPRAS PEDIDO",
+                        "company": "PROMO LIFE",
+                        "code_purchase": "OT8717",
+                        "order_date": "2023-02-10 14:50:18",
+                        "provider_name": "Muller-Nitzsche",
+                        "provider_address": "78555 Hermann Loaf Apt. 953\nKunzebury, SC 91198",
+                        "planned_date": "2023-02-22 10:20:51",
+                        "supplier_representative": "Mitchell Sauer",
+                        "total": "50.00",
+                        "status": "Entregado",
+                        "invoice": null,
+                        "xml": null,
+                        "payment_status": "En validacion"
+                    },
+                    {
+                        "id": 1,
+                        "code_sale": "PED1230",
+                        "type_purchase": "Pedido",
+                        "sequence": "COMPRAS PEDIDO",
+                        "company": "PROMO LIFE",
+                        "code_purchase": "OC9691",
+                        "order_date": "2023-02-13 19:16:56",
+                        "provider_name": "Donnelly and Sons",
+                        "provider_address": "8873 Hessel Square\nReillyfort, OR 59045",
+                        "planned_date": "2023-02-22 16:52:34",
+                        "supplier_representative": "Prof. Andreanne Yundt",
+                        "total": "204.00",
+                        "status": "En Proceso",
+                        "invoice": null,
+                        "xml": null,
+                        "payment_status": "En validacion"
+                    }
+                ]
+            }
+        ]
+    },
 ]
 ```
 
@@ -405,17 +622,11 @@ ERROR RESPONSE
 ```json
 [
 	{
-		"message": "Token invalido"
+		"message": "ordenes no disponibles en fecha seleccionada"
 	}
 ]
 ```
-```json
-[
-	{
-		"message": "Acceso restringido"
-	}
-]
-```
+
 </details>
 
 
@@ -427,7 +638,7 @@ ERROR RESPONSE
 Specific information to create, update a user, or filter information.
 <br>
 
-POST
+GET
 ```php
 {url}/requiredUserData
 ```
@@ -623,7 +834,7 @@ Get all the orders by provider that match with the logged user.
 
 <br>
 
-POST
+GET
 ```php
 {url}/providerOrders/{token}
 ```

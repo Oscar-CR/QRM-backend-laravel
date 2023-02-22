@@ -486,14 +486,14 @@ class AdminApiController extends Controller
 
     }
 
-    public function generalInitialInvoinces(Request $request){
+    public function generalInitialInvoinces(){
 
         $global_data = [];
         $general_companies = array(
             (object) ['social_reason' =>'BH TRADE MARKET SA DE CV'], 
-            (object) ['social_reason' =>  'PROMO LIFE S DE RL DE CV'],
-            (object) ['social_reason' =>  'TRADE MARKET 57 SA DE CV'], 
-            (object) ['social_reason' =>     'PROMO SALE SA DE CV'],
+            (object) ['social_reason' =>  'PROMO LIFE'],
+            (object) ['social_reason' =>  'TRADE MARKET'], 
+            (object) ['social_reason' =>     'PROMO SALE'],
         );
 
         foreach($general_companies as $general_company){
@@ -660,9 +660,9 @@ class AdminApiController extends Controller
             $global_data = [];
             $general_companies = array(
                 (object) ['social_reason' =>'BH TRADE MARKET SA DE CV'], 
-                (object) ['social_reason' =>  'PROMO LIFE S DE RL DE CV'],
-                (object) ['social_reason' =>  'TRADE MARKET 57 SA DE CV'], 
-                (object) ['social_reason' =>     'PROMO SALE SA DE CV'],
+                (object) ['social_reason' => 'PROMO LIFE'],
+                (object) ['social_reason' => 'TRADE MARKET'], 
+                (object) ['social_reason' => 'PROMO SALE'],
             );
     
             foreach($general_companies as $general_company){
@@ -692,9 +692,6 @@ class AdminApiController extends Controller
                 $third_date_total_to_pay = 0;
                 $third_date_total_debt = 0;
                 $third_date_total_pay = 0;
-    
-                //fecha actual del servidor
-                $datetime = Carbon::now();
     
                 //Se debe conocer la fecha actual para obtener las facturas de los dias siguientes del calendario
                 $end = strtotime($request->end);
@@ -820,6 +817,8 @@ class AdminApiController extends Controller
             }
             
             return $global_data;
+        }else{
+            return array(['message' =>'ordenes no disponibles en fecha seleccionada']);
         }
     }
 }
