@@ -1,6 +1,6 @@
 # APIS
 
-## Admin
+## Admin/Visualizer
 
 <details>
 	<summary>All orders</summary>
@@ -377,6 +377,131 @@ ERROR RESPONSE
 
 
 
+
+<details>
+	<summary>All orders by company </summary>
+Get all orders from a specific providers
+
+<br>
+
+GET
+```php
+{url}/allOrdersByCompany/{token}
+```
+BODY
+```php
+// no data
+```
+RESPONSE 
+```json
+[
+	{
+		
+	},
+]
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"message": "Token invalido"
+	}
+]
+```
+```json
+[
+	{
+		"message": "Acceso restringido"
+	}
+]
+```
+</details>
+
+
+
+## Admin
+
+<details>
+	<summary>Required user data</summary>
+Specific information to create, update a user, or filter information.
+<br>
+
+POST
+```php
+{url}/requiredUserData
+```
+BODY
+```php
+// no data
+```
+RESPONSE 
+```json
+[
+	{
+		"roles": [
+			{
+				"id": 1,
+				"name": "admin",
+				"display_name": "administrador",
+				"description": "",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+			{
+				"id": 2,
+				"name": "provider",
+				"display_name": "proveedor",
+				"description": "",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+			{
+				"id": 3,
+				"name": "billtopay",
+				"display_name": "cuentas por pagar",
+				"description": "",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+			{
+				"id": 4,
+				"name": "visualizer",
+				"display_name": "visualizador",
+				"description": "",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			}
+		],
+		"companies": [
+			{
+				"id": 1,
+				"social_reason": "SIN ASIGNAR",
+				"rfc": "SIN ASIGNAR",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+			{
+				"id": 2,
+				"social_reason": "BH TRADE MARKET SA DE CV",
+				"rfc": "0987654321",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+			{
+				"id": 3,
+				"social_reason": "PROMO LIFE S DE RL DE CV",
+				"rfc": "1234123412",
+				"created_at": "2023-02-22T17:25:23.000000Z",
+				"updated_at": "2023-02-22T17:25:23.000000Z"
+			},
+		]
+	}
+]
+```
+</details>
+
+
 <details>
 	<summary>Edit user</summary>
 Get specific information for a user
@@ -503,7 +628,7 @@ POST
 {url}/providerOrders/{token}
 ```
 BODY
-```json
+```php
 // no data
 ```
 RESPONSE 
@@ -587,9 +712,6 @@ ERROR RESPONSE
 ```
 </details>
 
-
-
-## Visualizer
 
 ## Global
 

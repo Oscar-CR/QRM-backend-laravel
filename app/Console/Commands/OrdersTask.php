@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\RoleUser;
 use App\Models\SalesOrders;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +44,7 @@ class OrdersTask extends Command
 
         $page = 1;
 
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NjkxOTYxMywiZXhwIjoxNjc3MTc4ODEzLCJuYmYiOjE2NzY5MTk2MTMsImp0aSI6IkxkSUphZVVrOFNFekVCWmoiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.E04t-gqcP_M2KBrO6klfkMVbQcbziGNwMa8P0p-UUmg';
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3NzA4NDU0MCwiZXhwIjoxNjc3MzQzNzQwLCJuYmYiOjE2NzcwODQ1NDAsImp0aSI6IlpiZVU1UTFGQTZXbk9aaHYiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.sF77Y3uO24UxIgD3BfPpptO3SlJ8G4_VH-SBVSK5sEc';
         $init_url = 'https://dev-api-bpms.promolife.lat/api/pedidos?page='.$page.'&token='. $token;
         $init_ch = curl_init();
         curl_setopt($init_ch, CURLOPT_URL, $init_url);
@@ -143,6 +144,13 @@ class OrdersTask extends Command
                                 $create_user->status_id = 1;
                                 $create_user->company_id = $find_provider_id->id;
                                 $create_user->save();
+
+                                $find_user_id = User::all()->where('fullname', $sale_order->commercial_name)->last();
+                                $create_role = new RoleUser();
+                                $create_role->role_id = 2;
+                                $create_role->user_id = $find_user_id->id;
+                                $create_role->user_type ='App\Models\User';
+                                $create_role->save();
 
                                 try {
 
