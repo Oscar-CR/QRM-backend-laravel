@@ -22,7 +22,7 @@ class AdminApiController extends Controller
         $user_token = Token::all()->where('token',$token)->first();
 
         if($user_token == null){
-            return 'Token invalido';
+            return array(['message' =>'Token invalido']);
         }
 
         //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
@@ -31,7 +31,7 @@ class AdminApiController extends Controller
 
         //Los proveedores no pueden ver todas las ordenes
         if(count($role) <> 0){
-            return 'Acceso restringido';
+            return array(['message' =>'Acceso restringido']);
         }
 
         $general_data = [];
@@ -70,7 +70,19 @@ class AdminApiController extends Controller
                         
                 foreach($products as $product){ 
                     array_push($product_data, (object)[
-                        'data' => $product,
+                        'id' => $product->id,
+                        'odoo_product_id' => $product->odoo_product_id,
+                        'product' => $product->product,
+                        'description' => $product->description,
+                        'planned_date' => $product->planned_date,
+                        'company' => $product->company,
+                        'quantity' => $product->quantity,
+                        'quantity_delivered' => $product->quantity_delivered,
+                        'quantity_invoiced' => $product->quantity_invoiced,
+                        'measurement_unit' => $product->measurement_unit,
+                        'unit_price' => $product->unit_price,
+                        'subtotal' => $product->subtotal,
+                        'pucharse_order_id' => $product->pucharse_order_id,
                     ]);
                 }
                          
@@ -91,7 +103,7 @@ class AdminApiController extends Controller
                     'invoice' => $order->invoice,
                     'xml' => $order->xml,
                     'payment_status'=> $order->payment_status,
-                    'product' => $product_data
+                    'products_data' => $product_data
                 ]);
                         
                 $product_data = [];
@@ -131,7 +143,7 @@ class AdminApiController extends Controller
         $user_token = Token::all()->where('token',$token)->first();
 
         if($user_token == null){
-            return 'Token invalido';
+            return  array(['message' =>'Token invalido']);
         }
 
         //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
@@ -140,14 +152,14 @@ class AdminApiController extends Controller
 
         //Los proveedores no pueden ver todas las ordenes
         if(count($role) <> 0){
-            return 'Acceso restringido';
+            return  array(['message' =>'Acceso restringido']);
         }
 
         $general_companies = array(
-            (object) ['social_reason' =>'BH TRADE MARKET SA DE CV'], 
-            (object) ['social_reason' =>  'PROMO LIFE S DE RL DE CV'],
-            (object) ['social_reason' =>  'TRADE MARKET 57 SA DE CV'], 
-            (object) ['social_reason' =>     'PROMO SALE SA DE CV'],
+            (object) ['social_reason' => 'BH TRADE MARKET SA DE CV'], 
+            (object) ['social_reason' => 'PROMO LIFE'],
+            (object) ['social_reason' => 'BH TRADEMARKET'], 
+            (object) ['social_reason' => 'PROMO SALE'],
         );
 
         $general_data = [];
@@ -187,7 +199,19 @@ class AdminApiController extends Controller
                             
                     foreach($products as $product){                        
                         array_push($product_data, (object)[
-                            'data' => $product,
+                            'id' => $product->id,
+                            'odoo_product_id' => $product->odoo_product_id,
+                            'product' => $product->product,
+                            'description' => $product->description,
+                            'planned_date' => $product->planned_date,
+                            'company' => $product->company,
+                            'quantity' => $product->quantity,
+                            'quantity_delivered' => $product->quantity_delivered,
+                            'quantity_invoiced' => $product->quantity_invoiced,
+                            'measurement_unit' => $product->measurement_unit,
+                            'unit_price' => $product->unit_price,
+                            'subtotal' => $product->subtotal,
+                            'pucharse_order_id' => $product->pucharse_order_id,
                         ]);
                     }
                              
@@ -208,7 +232,7 @@ class AdminApiController extends Controller
                         'invoice' => $order->invoice,
                         'xml' => $order->xml,
                         'payment_status'=> $order->payment_status,
-                        'product' => $product_data
+                        'products_data' => $product_data
                     ]);
                     
                     $product_data = [];
