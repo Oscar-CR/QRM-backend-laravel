@@ -48,7 +48,7 @@ Route::post('/reset-password', [GlobalApiController::class, 'resetPassword'])->n
 /* ADMIN ROUTES */
 Route::get('/allOrders/{token}', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
 Route::get('/allOrdersByCompany/{token}', [AdminApiController::class, 'allOrdersByCompany'])->name('api.allOrdersByCompany');
-Route::get('/allUsers', [AdminApiController::class, 'allUsers'])->name('api.allUsers');
+Route::get('/allUsers/{token}', [AdminApiController::class, 'allUsers'])->name('api.allUsers');
 Route::get('/requiredUserData', [AdminApiController::class, 'requiredUserData'])->name('api.requiredUserData');
 Route::get('/editUser/{user_id}', [AdminApiController::class, 'editUser'])->name('api.editUser');
 Route::post('/updateUser', [AdminApiController::class, 'updateUser'])->name('api.updateUser');

@@ -280,7 +280,7 @@ class AdminApiController extends Controller
         $users = User::all();
         foreach($users as $user){
 
-            $role_id = RoleUser::all()->where('user_id',$user->id)->first();
+            $roles = RoleUser::all()->where('user_id',$user->id)->first();
 
             array_push($user_data, (object)[
                 'id' => $user->id,
@@ -289,7 +289,7 @@ class AdminApiController extends Controller
                 'email' => $user->email,
                 'status_id' => $user->status_id,
                 'company_id' => $user->company_id,
-                'role_id' => $role_id->role_id,                
+                'role_id' => $roles->role_id,                
             ]);
         }
 
@@ -318,8 +318,29 @@ class AdminApiController extends Controller
             'email' => 'required',
             'password' => 'required',
             'role_id' => 'required',
-            'company_id' => 'required'
+            'company_id' => 'required',
+            'token'=>'required'
         ]);
+
+        $user_token = Token::all()->where('token',$request->token)->first();
+        $find_email = User::all()->where('email',$request->email)->all(); 
+
+        if(count($find_email)<>0){
+            return array(['message' =>'Este correo ya está en uso']);
+        }
+        
+        if($user_token == null){
+            return array(['message' =>'Token invalido']);
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+
+        //Valida si es administrador
+        if(count($role) <> 1){
+            return array(['message' =>'Acceso restringido']);
+        }
 
         $encrypted_password = Hash::make($request->password);
         $user = new User();
@@ -338,7 +359,7 @@ class AdminApiController extends Controller
         $role_user->user_type = 'App\Models\User';
         $role_user->save();
 
-        return  array (['message' =>'usuario creado satisfactoriamente']);
+        return  array (['message' =>'Usuario creado satisfactoriamente']);
 
     }
 
@@ -351,7 +372,6 @@ class AdminApiController extends Controller
             return array (['message' =>'Usuario no encontrado']) ;
         }
         
-
         $role_user = RoleUser::all()->where('user_id',$user->id)->first();
         $role = Role::all()->where('id', $role_user->role_id)->first();
 
@@ -376,9 +396,25 @@ class AdminApiController extends Controller
             'rfc' => 'required',
             'email' => 'required',
             'role_id' => 'required',
-            'company_id' => 'required'
+            'company_id' => 'required',
+            'token' => 'required'
         ]);
         
+        $user_token = Token::all()->where('token',$request->token)->first();
+
+        if($user_token == null){
+            return array(['message' =>'Token invalido']);
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+
+        //Valida si es administrador
+        if(count($role) <> 1){
+            return array(['message' =>'Acceso restringido']);
+        }
+
         if($request->password == null || $request->password == ''){
             DB::table('users')->where('id', $request->id)->update([
                 'fullname' => $request->fullname, 
@@ -403,19 +439,35 @@ class AdminApiController extends Controller
             'role_id' => $request->role_id, 
         ]);
 
-        return array (['message' =>'usuario actualizado satisfactoriamente']);
+        return array (['message' =>'Usuario actualizado satisfactoriamente']);
     }
 
     public function deleteUser(Request $request){
         $request->validate([
             'id' => 'required',
+            'token' => 'required'
         ]);
         
+        $user_token = Token::all()->where('token',$request->token)->first();
+
+        if($user_token == null){
+            return array(['message' =>'Token invalido']);
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+
+        //Valida si es administrador
+        if(count($role) <> 1){
+            return array(['message' =>'Acceso restringido']);
+        }
+
         DB::table('users')->where('id', $request->id)->update([
             'status_id' => 2, 
         ]);
 
-        return  array (['message' =>'usuario eliminado satisfactoriamente']);
+        return  array (['message' =>'Usuario eliminado satisfactoriamente']);
     }
 
     public function general(){

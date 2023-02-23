@@ -59,6 +59,8 @@ class GlobalApiController extends Controller
 
     public function loginUser(Request $request)
     {
+        $request->header('Access-Control-Allow-Origin', '*');
+
         $request->validate([
             'email' => 'required',
             'password' => 'required',
@@ -100,6 +102,10 @@ class GlobalApiController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $request->validate([
+            'email' => 'required',
+        ]);
+
         $user = User::all()->where('email', $request->email)->first();
         
         if($user == null){
@@ -118,7 +124,6 @@ class GlobalApiController extends Controller
             DB::table('personal_access_tokens')->where('name', $request->email)->delete();
         } catch (\Exception $e) {
         }
-
         
         return array(['message' =>'Email enviado con exito']);
     }

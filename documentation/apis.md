@@ -730,17 +730,50 @@ BODY
     "email":"User email",
     "password": "User password (plaintext)",
     "role_id": 1" (Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4)",
-    "company_id": 2 "(SIN ASIGNAR = 1 | BH TRADE MARKET SA DE CV = 2 | PROMO LIFE S DE RL DE CV = 3 | TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V = 4 ... 50) "
+    "company_id": 2 "(SIN ASIGNAR = 1 | BH TRADE MARKET SA DE CV = 2 | PROMO LIFE S DE RL DE CV = 3 | TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V = 4 ... 50) ",
+	"token": "User token",
 }
 ```
 RESPONSE 
 ```json
 [	
 	{
-		"message": "usuario creado satisfactoriamente"
+		"message": "Usuario creado satisfactoriamente"
 		
 	}
 ]
+
+```
+
+ERROR RESPONSE 
+```json
+[	
+	{
+		"message": "Este correo ya está en uso"
+		
+	}
+]
+
+```
+
+```json
+[	
+	{
+		"message": "Token invalidoe"
+		
+	}
+]
+
+```
+
+```json
+[	
+	{
+		"message": "Acceso restringido"
+		
+	}
+]
+
 ```
 
 </details>
@@ -805,6 +838,7 @@ BODY
 	"email": "email@email.com",
 	"role_id": 1,
 	"company_id": 1,
+	"token": "user token",
 }
 ```
 RESPONSE 
@@ -832,18 +866,14 @@ BODY
 ```json
 {
 	"id": 1,
-	"fullname": "fullname",
-	"rfc": "rfc",
-	"email": "email@email.com",
-	"role_id": 1,
-	"company_id": 1,
+	"token" : "User token",
 }
 ```
 RESPONSE 
 ```json
 [	
 	{
-		"message": "usuario eliminado satisfactoriamente"
+		"message": "Usuario eliminado satisfactoriamente"
 	}
 ]
 ```
@@ -856,6 +886,21 @@ ERROR RESPONSE
 	}
 ]
 ```
+```json
+[
+	{
+		"message": "Token invalido"
+	}
+]
+```
+```json
+[
+	{
+		"message": "Acceso restringido"
+	}
+]
+```
+
 </details>
 
 ## Provider
