@@ -59,8 +59,7 @@ class GlobalApiController extends Controller
 
     public function loginUser(Request $request)
     {
-        $request->header('Access-Control-Allow-Origin', '*');
-
+       
         $request->validate([
             'email' => 'required',
             'password' => 'required',
