@@ -713,6 +713,63 @@ RESPONSE
 </details>
 
 <details>
+	<summary>All users</summary>
+Get all the users from the database
+<br>
+
+GET
+```php
+{url}/allUsers/{token}
+```
+BODY
+```php
+// no data
+```
+RESPONSE 
+```json
+[
+	{
+		"id": 1,
+		"fullname": "Oscar Chavez Rosales",
+		"rfc": "123456789012",
+		"email": "admin@test.com",
+		"status_id": 1,
+		"company_id": 1,
+		"role_id": 1
+	},
+	{
+		"id": 2,
+		"fullname": "Persona 2",
+		"rfc": "9876543210",
+		"email": "proveedor@test.com",
+		"status_id": 1,
+		"company_id": 4,
+		"role_id": 2
+	},
+	{
+		"id": 3,
+		"fullname": "Persona 3",
+		"rfc": "1122334455",
+		"email": "billtopay@test.com",
+		"status_id": 1,
+		"company_id": 1,
+		"role_id": 3
+	},
+	{
+		"id": 4,
+		"fullname": "Persona 4",
+		"rfc": "9988776655",
+		"email": "visualizer@test.com",
+		"status_id": 1,
+		"company_id": 1,
+		"role_id": 4
+	},	
+]
+```
+</details>
+
+
+<details>
 	<summary>Create user</summary>
 Create new user in database (No token required)
 
