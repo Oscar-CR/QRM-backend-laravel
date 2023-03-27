@@ -13,6 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::create('payment_status', function (Blueprint $table) {
+            $table->id();
+            $table->string('description',50);
+            $table->timestamps();
+        });
 
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->id();
@@ -54,7 +59,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('invoice')->nullable();
             $table->string('xml')->nullable();
-            $table->string('payment_status')->nullable();
+            $table->foreignId('payment_status')->references('id')->on('payment_status')->nullable()->constrained();
             $table->foreignId('sales_order_id')->references('id')->on('sales_orders')->onDelete('cascade');
             $table->timestamps();
         });
@@ -83,6 +88,8 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('order_status');
+        Schema::dropIfExists('sales_orders');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('products');
     }

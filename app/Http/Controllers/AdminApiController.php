@@ -872,4 +872,35 @@ class AdminApiController extends Controller
             return array(['message' =>'ordenes no disponibles en fecha seleccionada']);
         }
     }
+
+    public function updateOrderStatus(Request $request)
+    { 
+        $request->validate([
+            'order_id' => 'required',
+            'status' => 'required',
+            'token' => 'required',
+        ]);
+
+        $user_token = Token::all()->where('token',$request->token)->first();
+
+        if($user_token == null){
+            return array(['message' =>'Token invalido']);
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+
+        //Valida si es administrador
+        if(count($role) <> 1){
+            return array(['message' =>'Acceso restringido']);
+        }
+
+        DB::table('orders')->where('id', $request->order_id)->update([
+            'payment_status' => intval($request->status) 
+        ]);
+
+        return array(['message' =>'Orden actualizada correctamente']);
+
+    }
 }

@@ -193,7 +193,7 @@ class TestController extends Controller
                                 $create_order->status =  $order->status;
                                 $create_order->invoice =  null;
                                 $create_order->xml =  null;
-                                $create_order->payment_status = 'En validacion';
+                                $create_order->payment_status = 1;
                                 $create_order->sales_order_id = $find_sale_id;
                                 $create_order->save();
         

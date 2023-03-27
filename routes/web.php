@@ -48,6 +48,7 @@ Route::post('/reset-password', [GlobalApiController::class, 'resetPassword'])->n
 /* ADMIN ROUTES */
 Route::get('/allOrders/{token}', [AdminApiController::class, 'allOrders'])->name('api.allOrders');
 Route::get('/allOrdersByCompany/{token}', [AdminApiController::class, 'allOrdersByCompany'])->name('api.allOrdersByCompany');
+Route::post('/updateOrderStatus', [AdminApiController::class, 'updateOrderStatus'])->name('api.updateOrderStatus');
 Route::get('/allUsers/{token}', [AdminApiController::class, 'allUsers'])->name('api.allUsers');
 Route::get('/requiredUserData', [AdminApiController::class, 'requiredUserData'])->name('api.requiredUserData');
 Route::get('/editUser/{user_id}', [AdminApiController::class, 'editUser'])->name('api.editUser');
@@ -55,6 +56,7 @@ Route::post('/updateUser', [AdminApiController::class, 'updateUser'])->name('api
 Route::post('/storeUser', [AdminApiController::class, 'storeUser'])->name('api.storeUser');
 Route::post('/deleteUser', [AdminApiController::class, 'deleteUser'])->name('api.deleteUser');
 Route::get('/general', [AdminApiController::class, 'general'])->name('api.general');
+
 /* Route::post('/updateXML', [AdminApiController::class, 'updateXML'])->name('api.updateXML');
 Route::post('/updatePDF', [AdminApiController::class, 'updatePDF'])->name('api.updatePDF'); */
 Route::get('/generalInitialInvoinces', [AdminApiController::class, 'generalInitialInvoinces'])->name('api.generalInitialInvoinces');

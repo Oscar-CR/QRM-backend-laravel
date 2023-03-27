@@ -5,8 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Companies;
-use App\Models\Order;
-use App\Models\Product;
+use App\Models\PaymentStatus;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
@@ -132,6 +131,26 @@ class DatabaseSeeder extends Seeder
             'status_id'=>1,
             'company_id'=>1,
         ])->attachRole($visualizer); 
+
+        PaymentStatus::create([
+            'id' => 1,
+            'description' => 'En validación',
+        ]);
+
+        PaymentStatus::create([
+            'id' => 2,
+            'description' => 'Validado',
+        ]);
+
+        PaymentStatus::create([
+            'id' => 3,
+            'description' => 'Por pagar',
+        ]);
+
+        PaymentStatus::create([
+            'id' => 4,
+            'description' => 'Pagado',
+        ]);
 /* 
         // ---------------- ORDENES Y PRODUCTOS  ----------------
         
