@@ -46,7 +46,7 @@ RESPONSE
 						"planned_date": "2023-02-22 16:52:34",
 						"supplier_representative": "Prof. Andreanne Yundt",
 						"total": "204.00",
-						"status": "En Proceso",
+						"status": 1,
 						"invoice": null,
 						"xml": null,
 						"payment_status": "En validacion",
@@ -92,7 +92,7 @@ RESPONSE
 								"planned_date": "2023-02-23 00:53:13",
 								"supplier_representative": "Dr. Oral Monahan MD",
 								"total": "130.00",
-								"status": "En Proceso",
+								"status": 1,
 								"invoice": null,
 								"xml": null,
 								"payment_status": "En validacion",
@@ -200,7 +200,7 @@ RESPONSE
 						"planned_date": "2022-02-01 16:52:57",
 						"supplier_representative": "TEAM VDE",
 						"total": "3352.40",
-						"status": "Pedido de compra",
+						"status": 1,
 						"invoice": null,
 						"xml": null,
 						"payment_status": "En validacion",
@@ -261,7 +261,7 @@ RESPONSE
 						"planned_date": "2021-05-07 21:21:52",
 						"supplier_representative": "FERNANDA MICHELL DIAZ HERNANDEZ",
 						"total": "6436.61",
-						"status": "Pedido de compra",
+						"status": 1,
 						"invoice": null,
 						"xml": null,
 						"payment_status": "En validacion",
@@ -312,7 +312,7 @@ RESPONSE
 						"planned_date": "2022-02-01 16:52:57",
 						"supplier_representative": "TEAM VDE",
 						"total": "3352.40",
-						"status": "Pedido de compra",
+						"status": 1,
 						"invoice": null,
 						"xml": null,
 						"payment_status": "En validacion",
@@ -472,7 +472,7 @@ RESPONSE
                         "planned_date": "2023-02-23 16:52:34",
                         "supplier_representative": "Prof. Andreanne Yundt",
                         "total": "204.00",
-                        "status": "En Proceso",
+                        "status": 1,
                         "invoice": null,
                         "xml": null,
                         "payment_status": "En validacion"
@@ -588,7 +588,7 @@ RESPONSE
                         "planned_date": "2023-02-22 10:20:51",
                         "supplier_representative": "Mitchell Sauer",
                         "total": "50.00",
-                        "status": "Entregado",
+                        "status": 1,
                         "invoice": null,
                         "xml": null,
                         "payment_status": "En validacion"
@@ -606,7 +606,7 @@ RESPONSE
                         "planned_date": "2023-02-22 16:52:34",
                         "supplier_representative": "Prof. Andreanne Yundt",
                         "total": "204.00",
-                        "status": "En Proceso",
+                        "status": 1,
                         "invoice": null,
                         "xml": null,
                         "payment_status": "En validacion"
@@ -960,6 +960,60 @@ ERROR RESPONSE
 
 </details>
 
+<details>
+	<summary>Update order status</summary>
+Change the order status from the orders
+
+| ID      | Status |  
+| ----------- | ----------- |
+| 1 | En validacion   | 
+| 2 | Validado     | 
+| 3 | Por pagar | 
+| 4 | Pagado  | 
+
+<br>
+
+POST
+```php
+{url}/updateOrderStatus
+```
+BODY
+```json
+{
+	"token": "USER_TOKEN" ,
+	"order_id" : 1,
+	"status" : 1,
+}
+```
+RESPONSE 
+```json
+[	
+	{
+		"message": "Orden actualizada correctamente"
+	}
+]
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"message": "Acceso restringido"
+	}
+]
+```
+```json
+[
+	{
+		"message": "Token invalido"
+	}
+]
+```
+
+</details>
+
+
+
 ## Provider
 
 <details>
@@ -992,7 +1046,7 @@ RESPONSE
         "planned_date": "2023-02-23 06:42:38",
         "supplier_representative": "Berry Roob",
         "total": "817.00",
-        "status": "Confirmado",
+        "status": 1,
         "invoice": null,
         "xml": null,
         "payment_status": "En validacion",
@@ -1091,7 +1145,7 @@ RESPONSE
         "planned_date": "2023-02-23 06:42:38",
         "supplier_representative": "Berry Roob",
         "total": "817.00",
-        "status": "Confirmado",
+        "status": 1,
         "invoice": null,
         "xml": null,
         "payment_status": "En validacion",
