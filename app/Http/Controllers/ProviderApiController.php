@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class ProviderApiController extends Controller
 {
@@ -81,17 +83,20 @@ class ProviderApiController extends Controller
         $path_data  = [];
         $xml_data = "";
         $pdf_data = "";
+        $order = Order::all()->where('id',$request->order_id)->last();
 
         if ($request->hasFile('xml')) {
             $request->validate([
                 'xml' => 'required|mimes:xml',
             ]);
+            
+            File::delete($order->xml);
             $xml =  $request->file('xml');
 
             $nombreXML = time() . ' ' . str_replace(',', ' ', $xml->getClientOriginalName());
             $xml->move(public_path('storage/xml/'), $nombreXML); 
 
-            DB::table('orders')->where('id', $request->id)->update([
+            DB::table('orders')->where('id', $request->order_id)->update([
                 'xml' => 'storage/xml/'. $nombreXML, 
             ]);
 
@@ -103,13 +108,15 @@ class ProviderApiController extends Controller
             $request->validate([
                 'pdf' => 'required|mimes:pdf',
             ]);
+            
+            File::delete($order->pdf);
             $pdf =  $request->file('pdf');
 
             $nombrePDF = time() . ' ' . str_replace(',', ' ', $pdf->getClientOriginalName());
             $pdf->move(public_path('storage/pdf/'), $nombrePDF);
             
-            DB::table('orders')->where('id', $request->id)->update([
-                'invoice' => 'storage/xml/'. $nombrePDF, 
+            DB::table('orders')->where('id', $request->order_id)->update([
+                'invoice' => 'storage/pdf/'. $nombrePDF, 
             ]);
 
             $pdf_data = 'storage/pdf/'. $nombrePDF;
