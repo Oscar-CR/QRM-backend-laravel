@@ -1,0 +1,16 @@
+name: Enviar notificación por Slack
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - closed
+jobs:
+  slack_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack notification
+        run: |
+          MESSAGE="🚨 Se ha actualizado el API de Gestionity 🚨"
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"'"$MESSAGE"'"}' https://hooks.slack.com/services/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
