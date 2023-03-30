@@ -728,42 +728,67 @@ BODY
 RESPONSE 
 ```json
 [
-	{
-		"id": 1,
-		"fullname": "Oscar Chavez Rosales",
-		"rfc": "123456789012",
-		"email": "admin@test.com",
-		"status_id": 1,
-		"company_id": 1,
-		"role_id": 1
-	},
-	{
-		"id": 2,
-		"fullname": "Persona 2",
-		"rfc": "9876543210",
-		"email": "proveedor@test.com",
-		"status_id": 1,
-		"company_id": 4,
-		"role_id": 2
-	},
-	{
-		"id": 3,
-		"fullname": "Persona 3",
-		"rfc": "1122334455",
-		"email": "billtopay@test.com",
-		"status_id": 1,
-		"company_id": 1,
-		"role_id": 3
-	},
-	{
-		"id": 4,
-		"fullname": "Persona 4",
-		"rfc": "9988776655",
-		"email": "visualizer@test.com",
-		"status_id": 1,
-		"company_id": 1,
-		"role_id": 4
-	},	
+    {
+        "users": [
+            {
+                "id": 1,
+                "fullname": "Nombre Administrador",
+                "rfc": "123456789012",
+                "email": "admin@test.com",
+                "status_id": 1,
+                "local_company_id": 1,
+                "role_id": 1
+            },
+            {
+                "id": 2,
+                "fullname": "Nombre Administrador 2",
+                "rfc": "35467869756",
+                "email": "admin2@test.com",
+                "status_id": 1,
+                "local_company_id": 1,
+                "role_id": 1
+            },
+            {
+                "id": 3,
+                "fullname": "Nombre Cuentas por pagar",
+                "rfc": "1122334455",
+                "email": "billtopay@test.com",
+                "status_id": 1,
+                "local_company_id": 1,
+                "role_id": 3
+            },
+            {
+                "id": 4,
+                "fullname": "Nombre Visualizador",
+                "rfc": "9988776655",
+                "email": "visualizer@test.com",
+                "status_id": 1,
+                "local_company_id": 1,
+                "role_id": 4
+            }
+        ],
+        "providers": [
+            {
+                "id": 5,
+                "fullname": "Alta Lynch II",
+                "rfc": null,
+                "email": "regan.stoltenberg@example.org",
+                "status_id": 1,
+                "provider_company": "Donnelly and Sons",
+                "role_id": 2
+            },
+            {
+                "id": 6,
+                "fullname": "Ms. Marquise Mante III",
+                "rfc": null,
+                "email": "milo.frami@example.org",
+                "status_id": 1,
+                "provider_company": "Kiehn, Mayert and Sauer",
+                "role_id": 2
+            },
+            
+        ]
+    }
 ]
 ```
 </details>

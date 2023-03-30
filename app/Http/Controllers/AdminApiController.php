@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProviderCompany;
 use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\Token;
@@ -39,7 +40,7 @@ class AdminApiController extends Controller
         $order_data = [];
         $product_data = [];
 
-        $companies = Companies::all();
+        $companies = ProviderCompany::all();
         $general_total_to_pay = 0;
         $general_total_debt = 0;
         $general_total_pay = 0;
@@ -167,7 +168,7 @@ class AdminApiController extends Controller
         $company_data = [];
         $order_data = [];
         $product_data = [];
-        $companies = Companies::all();
+        $companies = ProviderCompany::all();
         $general_total_to_pay = 0;
         $general_total_debt = 0;
         $general_total_pay = 0;
@@ -276,24 +277,48 @@ class AdminApiController extends Controller
 
     public function allUsers(){
         
-        $user_data = [];
+        $data = [];
+        $users_data = [];
+        $providers_data = [];
         $users = User::all();
         foreach($users as $user){
 
-            $roles = RoleUser::all()->where('user_id',$user->id)->first();
+            $roles = RoleUser::all()->where('user_id',$user->id)->last();
+            
+            //Proveedor
+            if($user->local_company_id == null){
+                array_push($providers_data, (object)[
+                    'id' => $user->id,
+                    'fullname' => $user->fullname,
+                    'rfc' => $user->rfc,
+                    'email' => $user->email,
+                    'status_id' => $user->status_id,
+                    'provider_company' => $user->provider_company,
+                    'role_id'  =>   $roles->role_id,           
+                ]);
+            }
 
-            array_push($user_data, (object)[
-                'id' => $user->id,
-                'fullname' => $user->fullname,
-                'rfc' => $user->rfc,
-                'email' => $user->email,
-                'status_id' => $user->status_id,
-                'company_id' => $user->company_id,
-                'role_id' => $roles->role_id,                
-            ]);
+            //Usuario
+            if($user->provider_company == null){
+                array_push($users_data, (object)[
+                    'id' => $user->id,
+                    'fullname' => $user->fullname,
+                    'rfc' => $user->rfc,
+                    'email' => $user->email,
+                    'status_id' => $user->status_id,
+                    'local_company_id' => $user->local_company_id,  
+                    'role_id'  =>   $roles->role_id,           
+                ]);
+            }
+            
         }
 
-        return $user_data;
+        array_push($data, (object)[
+            'users' => $users_data,
+            'providers' => $providers_data,           
+        ]);
+
+        return $data;
     }
 
 
@@ -301,7 +326,7 @@ class AdminApiController extends Controller
         $required_data = [];
 
         $roles = Role::all();
-        $companies = Companies::all();
+        $companies = ProviderCompany::all();
 
         array_push($required_data, (object)[
             'roles'=> $roles,
@@ -317,8 +342,9 @@ class AdminApiController extends Controller
             'fullname' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'provider_company' => 'required',
+            'local_company_id' => 'required',
             'role_id' => 'required',
-            'company_id' => 'required',
             'token'=>'required'
         ]);
 
@@ -349,7 +375,8 @@ class AdminApiController extends Controller
         $user->email = $request->email;
         $user->password = $encrypted_password;
         $user->status_id = 1;
-        $user->company_id = $request->company_id;
+        $user->provider_company = $request->provider_company;
+        $user->local_company_id = $request->local_company_id;
         $user->save();
 
         $user_id = User::all()->where('fullname',$request->fullname)->last();
@@ -382,8 +409,9 @@ class AdminApiController extends Controller
             'rfc' => $user->rfc,
             'email' => $user->email,
             'status_id' => $user->status_id,
-            'company_id' => $user->company_id,
-            'role' => $role->id
+            'provider_company' => $user->company_id,
+            'local_company_id' => $user->local_company_id,
+            'role_id' => $role->id
         ]);
         return $user_data;
     }
@@ -395,8 +423,10 @@ class AdminApiController extends Controller
             'fullname' => 'required',
             'rfc' => 'required',
             'email' => 'required',
-            'role_id' => 'required',
-            'company_id' => 'required',
+            'status_id' => 'required',
+            'provider_company' => 'required',
+            'local_company_id' => 'required',
+            'role_id' =>'required',
             'token' => 'required'
         ]);
         
@@ -420,8 +450,11 @@ class AdminApiController extends Controller
                 'fullname' => $request->fullname, 
                 'rfc' => $request->rfc,
                 'email' => $request->email,
-                'fullname' => $request->fullname,
-                'company_id' => $request->company_id,
+                'password' => $request->password,
+                'status_id' => $user->status_id,
+                'provider_company' => $user->company_id,
+                'local_company_id' => $user->local_company_id,
+                'role' => $role->id
             ]);
         }else{
             $newPassword = Hash::make($request->password);
@@ -430,8 +463,10 @@ class AdminApiController extends Controller
                 'rfc' => $request->rfc,
                 'email' => $request->email,
                 'password' => $newPassword,
-                'fullname' => $request->fullname,
-                'company_id' => $request->company_id,
+                'status_id' => $user->status_id,
+                'provider_company' => $user->company_id,
+                'local_company_id' => $user->local_company_id,
+                'role' => $role->id,
             ]);
         }
 
@@ -443,6 +478,7 @@ class AdminApiController extends Controller
     }
 
     public function deleteUser(Request $request){
+        
         $request->validate([
             'id' => 'required',
             'token' => 'required'

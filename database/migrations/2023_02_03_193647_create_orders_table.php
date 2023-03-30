@@ -24,14 +24,14 @@ return new class extends Migration
             $table->string('code_sale',50);
             $table->string('name_sale');
             $table->string('sequence')->nullable();
-            $table->string('invoice_address')->nullable();
-            $table->string('delivery_address')->nullable();
+            $table->longText('invoice_address')->nullable();
+            $table->longText('delivery_address')->nullable();
             $table->string('delivery_time')->nullable();
-            $table->string('delivery_instructions')->nullable();
+            $table->longText('delivery_instructions')->nullable();
             $table->string('order_date');
             $table->string('incidence')->nullable();
             $table->string('sample_required')->nullable();
-            $table->string('additional_information')->nullable();
+            $table->longText('additional_information')->nullable();
             $table->string('tariff');
             $table->string('commercial_name')->nullable();
             $table->string('commercial_email')->nullable();

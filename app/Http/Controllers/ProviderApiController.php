@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-
 
 class ProviderApiController extends Controller
 {
@@ -23,12 +20,11 @@ class ProviderApiController extends Controller
         }
         
         $user = User::all()->where('id', $token_id)->first();
-        $company = Companies::all()->where('id',$user->company_id)->first();
 
         $product_data = [];
         $order_data = [];
         
-        $orders = Order::all()->where('provider_name',$company->social_reason);
+        $orders = Order::all()->where('provider_name',$user->provider_company);
        
         foreach($orders as $order){
             
@@ -101,7 +97,6 @@ class ProviderApiController extends Controller
             ]);
 
             $xml_data = 'storage/xml/'. $nombreXML;
-
         } 
 
         if ($request->hasFile('pdf')) {
@@ -120,15 +115,12 @@ class ProviderApiController extends Controller
             ]);
 
             $pdf_data = 'storage/pdf/'. $nombrePDF;
-
         } 
-
         
         array_push($path_data, (object)[
             'xml' => $xml_data,
             'pdf' => $pdf_data,
         ]);
-
 
         return $path_data;
     }

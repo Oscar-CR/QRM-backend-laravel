@@ -20,7 +20,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('providers_companies', function (Blueprint $table) {
+            $table->id();
+            $table->string('social_reason');
+            $table->string('rfc')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('local_companies', function (Blueprint $table) {
             $table->id();
             $table->string('social_reason');
             $table->string('rfc')->nullable();
@@ -35,7 +42,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('status_id')->references('id')->on('status')->onDelete('cascade');
-            $table->foreignId('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->string('provider_company')->nullable();
+            $table->integer('local_company_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -48,8 +56,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
         Schema::dropIfExists('status');
+        Schema::dropIfExists('providers');
+        Schema::dropIfExists('local_companies');
         Schema::dropIfExists('users');
     }
 };

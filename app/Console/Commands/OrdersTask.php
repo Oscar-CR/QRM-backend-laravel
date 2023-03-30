@@ -7,12 +7,16 @@ use Illuminate\Console\Command;
 use App\Models\Companies;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProviderCompany;
+use App\Models\Providers;
+use App\Models\ProvidersCompanies;
 use App\Models\RoleUser;
 use App\Models\SalesOrders;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use NunoMaduro\Collision\Contracts\Provider;
 
 class OrdersTask extends Command
 {
@@ -44,7 +48,7 @@ class OrdersTask extends Command
 
         $page = 1;
 
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY3OTk0MzkyMSwiZXhwIjoxNjgwMjAzMTIxLCJuYmYiOjE2Nzk5NDM5MjEsImp0aSI6IkIyd0o3Q1VIbFlRWUVZenAiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.d3PqOWeUBHhWw0mTWKoJ174Q22xx66yr5aLkQljRa5Y';
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1hcGktYnBtcy5wcm9tb2xpZmUubGF0L2FwaS9sb2dpbiIsImlhdCI6MTY4MDEyODI1NiwiZXhwIjoxNjgwMzg3NDU2LCJuYmYiOjE2ODAxMjgyNTYsImp0aSI6IjZCd2haTno2akc1aFN1RGkiLCJzdWIiOiI3MCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjpbXSwidXNlciI6eyJuYW1lIjoiSXZvbm5lIEzDs3BleiBFc2NvYmVkbyIsImVtYWlsIjoiaXZvbm5lLmxvcGV6QHByb21vbGlmZS5jb20ubXgiLCJwaG90byI6Imh0dHBzOi8vaW50cmFuZXQucHJvbW9saWZlLmxhdC9zdG9yYWdlL3Bvc3QvMTUuLSUyMEl2b25uZSUyMExvcGV6LmpwZyJ9fQ.VITPI3hdXIEL1DiS_Y5KrpTAAl4wJ9qUs_l80Py1tas';
         $init_url = 'https://dev-api-bpms.promolife.lat/api/pedidos?page='.$page.'&token='. $token;
         $init_ch = curl_init();
         curl_setopt($init_ch, CURLOPT_URL, $init_url);
@@ -108,13 +112,13 @@ class OrdersTask extends Command
                         foreach($sale_order->details_orders as $order){
 
                             $find_order = Order::all()->where('code_sale',$order->code_sale)->last();
-                            $find_company = Companies::all()->where('social_reason', $order->company)->last();
-                            $find_provider = Companies::all()->where('social_reason', $order->provider_name)->last();
+                            $find_company = ProviderCompany::all()->where('social_reason', $order->company)->last();
+                            $find_provider = ProviderCompany::all()->where('social_reason', $order->provider_name)->last();
                             $find_user_to_send_mail = User::all()->where('email',$sale_order->commercial_email)->last();
 
                             //Registro de nuevos proveedores
                             if($find_company ==null){
-                                $create_company = new Companies();
+                                $create_company = new ProviderCompany();
                                 $create_company->social_reason =  $order->company;
                                 $create_company->rfc =  'SIN ASIGNAR';
                                 $create_company->save(); 
@@ -122,13 +126,11 @@ class OrdersTask extends Command
                             
                             //Registro de nuevos proveedores
                             if($find_provider ==null){
-                                $create_provider = new Companies();
+                                $create_provider = new ProviderCompany();
                                 $create_provider->social_reason =  $order->provider_name;
                                 $create_provider->rfc =  'SIN ASIGNAR';
                                 $create_provider->save(); 
                             }
-
-                            $find_provider_id = Companies::all()->where('social_reason', $order->provider_name)->last();
 
                             //Si no encuentra el usuario en la BD se creara un nuevo registro y enviara su acceso
                             if($find_user_to_send_mail == null){
@@ -142,7 +144,8 @@ class OrdersTask extends Command
                                 $create_user->email = $sale_order->commercial_email;
                                 $create_user->password = $encrypted_password; 
                                 $create_user->status_id = 1;
-                                $create_user->company_id = $find_provider_id->id;
+                                $create_user->provider_company = $order->provider_name;
+                                $create_user->local_company_id = null;
                                 $create_user->save();
 
                                 $find_user_id = User::all()->where('fullname', $sale_order->commercial_name)->last();
