@@ -484,8 +484,6 @@ RESPONSE
 ]
 ```
 
-
-
 </details>
 
 
@@ -634,7 +632,7 @@ ERROR RESPONSE
 ## Admin
 
 <details>
-	<summary>Required user data</summary>
+	<summary>Aditional information to create user</summary>
 Specific information to create, update a user, or filter information.
 <br>
 
@@ -737,6 +735,7 @@ RESPONSE
                 "email": "admin@test.com",
                 "status_id": 1,
                 "local_company_id": 1,
+                "provider_company": null,
                 "role_id": 1
             },
             {
@@ -746,6 +745,7 @@ RESPONSE
                 "email": "admin2@test.com",
                 "status_id": 1,
                 "local_company_id": 1,
+                "provider_company": null,
                 "role_id": 1
             },
             {
@@ -755,6 +755,7 @@ RESPONSE
                 "email": "billtopay@test.com",
                 "status_id": 1,
                 "local_company_id": 1,
+                "provider_company": null,
                 "role_id": 3
             },
             {
@@ -764,8 +765,9 @@ RESPONSE
                 "email": "visualizer@test.com",
                 "status_id": 1,
                 "local_company_id": 1,
+                "provider_company": null,
                 "role_id": 4
-            }
+            },
         ],
         "providers": [
             {
@@ -774,6 +776,7 @@ RESPONSE
                 "rfc": null,
                 "email": "regan.stoltenberg@example.org",
                 "status_id": 1,
+                "local_company_id": null,
                 "provider_company": "Donnelly and Sons",
                 "role_id": 2
             },
@@ -783,10 +786,50 @@ RESPONSE
                 "rfc": null,
                 "email": "milo.frami@example.org",
                 "status_id": 1,
+                "local_company_id": null,
                 "provider_company": "Kiehn, Mayert and Sauer",
                 "role_id": 2
             },
-            
+            {
+                "id": 7,
+                "fullname": "Kelton Dach",
+                "rfc": null,
+                "email": "marian34@example.org",
+                "status_id": 1,
+                "local_company_id": null,
+                "provider_company": "McKenzie, Fritsch and Reynolds",
+                "role_id": 2
+            },
+            {
+                "id": 8,
+                "fullname": "Pansy Larson II",
+                "rfc": null,
+                "email": "worn@example.com",
+                "status_id": 1,
+                "local_company_id": null,
+                "provider_company": "Jones Ltd",
+                "role_id": 2
+            },
+            {
+                "id": 9,
+                "fullname": "Ms. Elyssa Kshlerin",
+                "rfc": null,
+                "email": "aubrey.upton@example.org",
+                "status_id": 1,
+                "local_company_id": null,
+                "provider_company": "Schumm-Parker",
+                "role_id": 2
+            },
+            {
+                "id": 10,
+                "fullname": "Danial Littel",
+                "rfc": null,
+                "email": "murazik.sam@example.com",
+                "status_id": 1,
+                "local_company_id": null,
+                "provider_company": "Emard Inc",
+                "role_id": 2
+            },
         ]
     }
 ]
@@ -796,7 +839,63 @@ RESPONSE
 
 <details>
 	<summary>Create user</summary>
-Create new user in database (No token required)
+Create new user in database.
+
+---
+
+### Reference data
+
+Roles
+
+| role_id      | name |
+| ----------- | ----------- |
+| 1  | Administrador   |
+| 2  | Proveedor     |
+| 3  | Cuentas por pagar     |
+| 4  | Visualizador        |
+
+LocalCompanies
+
+| local_company_id      | name |
+| ----------- | ----------- |
+| 1  | BH TRADE MARKET SA DE CV   |
+| 2  | PROMO LIFE S DE RL DE CV     |
+| 3  | TRADE MARKET 57   |
+
+Status
+
+| id | name |
+| ----------- | ----------- |
+| 1  | activo  |
+| 2  | baja    |
+
+<br/>
+
+To set a provider_company, check  **Aditional information to create user**
+
+<br/>
+
+### Data to send
+
+| Required data      | type |
+| ----------- | ----------- |
+| fullname | String      |
+| email | String      |
+| password  | String  |
+| status_id | int  |
+| role_id | int  |
+| token | String  |
+
+
+| Optional data      | value |
+| ----------- | ----------- |
+| rfc  | String or null |
+| local_company_id | int  |
+| provider_company | String or null |
+
+<br/>
+
+---
 
 <br>
 
@@ -810,10 +909,11 @@ BODY
 	"fullname": "User fullname",
     "rfc": "User rfc | no required",
     "email":"User email",
-    "password": "User password (plaintext)",
-    "role_id": 1" (Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4)",
-    "company_id": 2 "(SIN ASIGNAR = 1 | BH TRADE MARKET SA DE CV = 2 | PROMO LIFE S DE RL DE CV = 3 | TEXTIL & PROMOTIONAL PRODUCTS S.A DE C.V = 4 ... 50) ",
-	"token": "User token",
+    "password": "User password",
+    "role_id": 1 ,
+    "provider_company":  "Provider company name",
+	"local_company_id":  1 ,
+	"token": "Admin token",
 }
 ```
 RESPONSE 
@@ -862,7 +962,7 @@ ERROR RESPONSE
 
 <details>
 	<summary>Edit user</summary>
-Get specific information for a user
+Get specific information for a user.
 
 <br>
 
@@ -879,12 +979,13 @@ RESPONSE
 [	
 	{
 		"id": 1,
-		"fullname": "Oscar Chavez Rosales",
+		"fullname": "Admin name",
 		"rfc": "123456789012",
 		"email": "admin@test.com",
 		"status_id": 1,
-		"company_id": 1,
-		"role": 1
+		"provider_company": "Provider company name",
+		"local_company_id": 1,
+		"role_id": 1
 	}
 ]
 ```
@@ -902,9 +1003,63 @@ ERROR RESPONSE
 
 <details>
 	<summary>Update user</summary>
-Update specific information for a user
+Update specific information for a user.
 
-<br>
+---
+
+### Reference data
+
+Roles
+
+| role_id      | name |
+| ----------- | ----------- |
+| 1  | Administrador   |
+| 2  | Proveedor     |
+| 3  | Cuentas por pagar     |
+| 4  | Visualizador        |
+
+LocalCompanies
+
+| local_company_id      | name |
+| ----------- | ----------- |
+| 1  | BH TRADE MARKET SA DE CV   |
+| 2  | PROMO LIFE S DE RL DE CV     |
+| 3  | TRADE MARKET 57   |
+
+Status
+
+| id | name |
+| ----------- | ----------- |
+| 1  | activo  |
+| 2  | baja    |
+
+To set a provider_company, check  **Aditional information to create user**
+
+<br/>
+
+### Data to send
+
+| Required data      | type |
+| ----------- | ----------- |
+| id  | int       |
+| fullname | String      |
+| email | String      |
+| status_id | int  |
+| role_id | int  |
+| token | String  |
+
+
+| Optional data      | value |
+| ----------- | ----------- |
+| rfc  | String or null |
+| password  | String or null     |
+| local_company_id | int  |
+| provider_company | String or null |
+
+<br/>
+
+---
+
 
 POST
 ```php
@@ -915,12 +1070,14 @@ BODY
 {
 
 	"id": 1,
-	"fullname": "fullname",
-	"rfc": "rfc",
-	"email": "email@email.com",
+	"fullname": "Admin name",
+	"rfc": "123456789012",
+	"email": "admin@test.com",
+	"status_id": 1,
+	"provider_company": "Provider company name",
+	"local_company_id": 1,
 	"role_id": 1,
-	"company_id": 1,
-	"token": "user token",
+	"token": "admin token",
 }
 ```
 RESPONSE 
@@ -928,6 +1085,23 @@ RESPONSE
 [	
 	{
 		"message": "usuario actualizado satisfactoriamente",
+	}
+]
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"message": "Token invalido"
+	}
+]
+```
+
+```json
+[
+	{
+		"message": "Acceso restringido"
 	}
 ]
 ```
@@ -940,6 +1114,20 @@ Delete specific information for a user (Change status)
 
 <br>
 
+---
+
+### Data to send
+
+| Required data      | type |
+| ----------- | ----------- |
+| id  | int       |
+| token | String  |
+
+
+<br/>
+
+---
+
 POST
 ```php
 {url}/deleteUser
@@ -948,7 +1136,7 @@ BODY
 ```json
 {
 	"id": 1,
-	"token" : "User token",
+	"token" : "Admin token",
 }
 ```
 RESPONSE 
@@ -987,9 +1175,15 @@ ERROR RESPONSE
 
 <details>
 	<summary>Update order status</summary>
-Change the order status from the orders
+Change the order status from the orders.
 
-| ID      | Status |  
+---
+
+### Reference data
+
+Status
+
+| id      | name |  
 | ----------- | ----------- |
 | 1 | En validacion   | 
 | 2 | Validado     | 
@@ -998,6 +1192,20 @@ Change the order status from the orders
 
 <br>
 
+### Data to send
+
+| Required data      | type |
+| ----------- | ----------- |
+| token  | String       |
+| order_id | int  |
+| status | int  |
+
+
+<br/>
+
+---
+
+
 POST
 ```php
 {url}/updateOrderStatus
@@ -1005,7 +1213,7 @@ POST
 BODY
 ```json
 {
-	"token": "USER_TOKEN" ,
+	"token": "Admin token" ,
 	"order_id" : 1,
 	"status" : 1,
 }

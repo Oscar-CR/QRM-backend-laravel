@@ -275,7 +275,27 @@ class AdminApiController extends Controller
     }
 
 
-    public function allUsers(){
+    public function allUsers($token){
+        
+        $user_token = Token::all()->where('token',$token)->first();
+
+        if($user_token == null){
+            return array(['message' =>'Token invalido']);
+        }
+
+        //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
+        $user = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+
+        //Valida si es administrador
+        if(count($role) <> 1){
+            return array(['message' =>'Acceso restringido']);
+        }
+
+        if($token == null) {
+
+        }
+
         
         $data = [];
         $users_data = [];
@@ -293,6 +313,7 @@ class AdminApiController extends Controller
                     'rfc' => $user->rfc,
                     'email' => $user->email,
                     'status_id' => $user->status_id,
+                    'local_company_id' => $user->local_company_id,  
                     'provider_company' => $user->provider_company,
                     'role_id'  =>   $roles->role_id,           
                 ]);
@@ -307,6 +328,20 @@ class AdminApiController extends Controller
                     'email' => $user->email,
                     'status_id' => $user->status_id,
                     'local_company_id' => $user->local_company_id,  
+                    'provider_company' => $user->provider_company,
+                    'role_id'  =>   $roles->role_id,           
+                ]);
+            }
+
+            if($user->provider_company != null && $user->local_company_id != null){
+                array_push($users_data, (object)[
+                    'id' => $user->id,
+                    'fullname' => $user->fullname,
+                    'rfc' => $user->rfc,
+                    'email' => $user->email,
+                    'status_id' => $user->status_id,
+                    'local_company_id' => $user->local_company_id,  
+                    'provider_company' => $user->provider_company,
                     'role_id'  =>   $roles->role_id,           
                 ]);
             }
@@ -342,8 +377,7 @@ class AdminApiController extends Controller
             'fullname' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'provider_company' => 'required',
-            'local_company_id' => 'required',
+            'status_id' => 'required',
             'role_id' => 'required',
             'token'=>'required'
         ]);
@@ -409,7 +443,7 @@ class AdminApiController extends Controller
             'rfc' => $user->rfc,
             'email' => $user->email,
             'status_id' => $user->status_id,
-            'provider_company' => $user->company_id,
+            'provider_company' => $user->provider_company,
             'local_company_id' => $user->local_company_id,
             'role_id' => $role->id
         ]);
@@ -421,15 +455,13 @@ class AdminApiController extends Controller
         $request->validate([
             'id' => 'required',
             'fullname' => 'required',
-            'rfc' => 'required',
             'email' => 'required',
             'status_id' => 'required',
-            'provider_company' => 'required',
-            'local_company_id' => 'required',
             'role_id' =>'required',
             'token' => 'required'
         ]);
         
+     
         $user_token = Token::all()->where('token',$request->token)->first();
 
         if($user_token == null){
@@ -437,8 +469,8 @@ class AdminApiController extends Controller
         }
 
         //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
-        $user = User::all()->where('id',$user_token->tokenable_id)->first();
-        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+        $admin = User::all()->where('id',$user_token->tokenable_id)->first();
+        $role = RoleUser::all()->where('user_id',$admin->id)->where('role_id',1);
 
         //Valida si es administrador
         if(count($role) <> 1){
@@ -446,16 +478,15 @@ class AdminApiController extends Controller
         }
 
         if($request->password == null || $request->password == ''){
+
             DB::table('users')->where('id', $request->id)->update([
                 'fullname' => $request->fullname, 
                 'rfc' => $request->rfc,
                 'email' => $request->email,
-                'password' => $request->password,
-                'status_id' => $user->status_id,
-                'provider_company' => $user->company_id,
-                'local_company_id' => $user->local_company_id,
-                'role' => $role->id
-            ]);
+                'status_id' => $request->status_id,
+                'provider_company' => $request->provider_company,
+                'local_company_id' => $request->local_company_id,
+            ]); 
         }else{
             $newPassword = Hash::make($request->password);
             DB::table('users')->where('id', $request->id)->update([
@@ -463,11 +494,10 @@ class AdminApiController extends Controller
                 'rfc' => $request->rfc,
                 'email' => $request->email,
                 'password' => $newPassword,
-                'status_id' => $user->status_id,
-                'provider_company' => $user->company_id,
-                'local_company_id' => $user->local_company_id,
-                'role' => $role->id,
-            ]);
+                'status_id' => $request->status_id,
+                'provider_company' => $request->provider_company,
+                'local_company_id' => $request->local_company_id,
+            ]); 
         }
 
         DB::table('role_user')->where('user_id', $request->id)->update([

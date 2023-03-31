@@ -58,10 +58,6 @@ class DatabaseSeeder extends Seeder
 
         /* ---------------- ENPRESAS Y PROVEEDORES ---------------- */
 
-        LocalCompanies::create([
-            'social_reason' => 'SIN ASIGNAR',
-            'rfc' => 'SIN ASIGNAR',
-        ]);
         
         LocalCompanies::create([
             'social_reason' => 'BH TRADE MARKET SA DE CV',
