@@ -955,7 +955,7 @@ class AdminApiController extends Controller
 
         //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
         $user = User::all()->where('id',$user_token->tokenable_id)->first();
-        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1);
+        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1)->where('role_id',3);
 
         //Valida si es administrador
         if(count($role) <> 1){
