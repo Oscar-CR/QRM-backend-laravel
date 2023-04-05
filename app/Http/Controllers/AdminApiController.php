@@ -955,11 +955,17 @@ class AdminApiController extends Controller
 
         //$Administrador = 1 | Proveedor = 2 | Cuentas por pagar = 3 | Visualizador = 4
         $user = User::all()->where('id',$user_token->tokenable_id)->first();
-        $role = RoleUser::all()->where('user_id',$user->id)->where('role_id',1)->where('role_id',3);
+        $role = RoleUser::all()->where('user_id',$user->id);
 
         //Valida si es administrador
-        if(count($role) <> 1){
-            return array(['message' =>'Acceso restringido']);
+        foreach($role as $rol){
+            if($rol->role_id == 2){
+                return array(['message' =>'Acceso restringido']);
+            }
+
+            if($rol->role_id == 4){
+                return array(['message' =>'Acceso restringido']);
+            }
         }
 
         DB::table('orders')->where('id', $request->order_id)->update([
