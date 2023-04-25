@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminApiController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\GlobalApiController;
 use App\Http\Controllers\ProviderApiController;
 
@@ -65,6 +66,10 @@ Route::post('/invoicesByDate', [AdminApiController::class, 'invoicesByDate'])->n
 /* PROVIDER ROUTES */
 Route::get('/providerOrders/{token}', [ProviderApiController::class, 'providerOrders'])->name('api.providerOrders');
 Route::post('/updateFiles', [ProviderApiController::class, 'updateFiles'])->name('api.updateFiles');
+
+/* FACTURAS */
+Route::post('/blacklist', [BillController::class, 'blackList'])->name('bill.blackList');
+
 
 /* TEST */
 Route::post('/testOrders', [TestController::class, 'testOrders'])->name('api.testOrders');

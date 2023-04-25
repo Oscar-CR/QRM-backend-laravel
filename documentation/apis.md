@@ -1,5 +1,47 @@
 # APIS
 
+## RFC
+<details>
+	<summary>Blacklist</summary>
+Validate the rfc
+
+<br>
+
+GET
+```php
+{url}/blacklist/
+```
+BODY
+```json
+{
+	"rfc": "STRING_RFC",
+}
+
+```
+RESPONSE 
+```json
+{
+	"success":true,
+	"rfcs_en_lista_negra":[{
+		"rfc":"AAA080808HL8",
+		"situacion":"Sentencia Favorable"}],
+	"rfcs_en_lista_negra_total":1,
+	"ultima_actualizacion":"2023-02-18T02:10:20.230-06:00"
+}true
+```
+
+ERROR RESPONSE 
+```json
+[
+	{
+		"message": "RFC vacio, verifica e intentalo nuevamente"
+	}
+]
+```
+
+</details>
+
+
 ## Admin/Visualizer
 
 <details>
