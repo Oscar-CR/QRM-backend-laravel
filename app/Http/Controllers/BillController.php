@@ -21,7 +21,7 @@ class BillController extends Controller
         $params = [
         'usuario_uid' => $api_user,
         'usuario_key' => $api_key,
-        'rfc' => ['ABC010101XYZ', 'AAA080808HL8']
+        'rfc' => $request->rfc
         ];
         
         $query = http_build_query($params);
